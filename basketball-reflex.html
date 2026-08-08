@@ -418,8 +418,13 @@ function handleTap(idx){
       }else{
         if(g.cellCount>g.best)g.best=g.cellCount;
         g.cellCount++;
+        // Escalation bonus — reaching a new level is its own reward,
+        // not just folded into the next round's normal score. Grows
+        // naturally with how far the round has climbed.
+        var escBonus=g.cellCount*10;
+        g.sc+=escBonus;
         updateHUD();
-        msg('✅ '+(attemptNum===0?'PERFECT! ':'CORRECT'+ptsLabel)+'MORE CELLS...','rbb-perfect');
+        msg('✅ '+(attemptNum===0?'PERFECT! ':'CORRECT'+ptsLabel)+'MORE CELLS! +'+escBonus+' BONUS','rbb-perfect');
         timers.push(setTimeout(function(){resetCells();autoNextRound()},700));
       }
     }
@@ -480,7 +485,7 @@ function restartGame(){
 }
 $('reflex_actBtn').onclick=startRound;
 buildCourt();
-$('reflexExitBtn').onclick=function(){window.location.href='hooporia-lab.html';};
+$('reflexExitBtn').onclick=function(){window.location.href='index.html';};
 })();
 </script>
 </body>
