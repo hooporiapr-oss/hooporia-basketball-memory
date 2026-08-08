@@ -75,6 +75,25 @@ body{
   letter-spacing:.03em;
 }
 
+.arena-title{
+  font-size:1.6rem;
+  font-weight:900;
+  font-style:italic;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  margin:28px 0 2px;
+  text-shadow:0 0 30px rgba(243,116,24,.4);
+}
+.arena-title span{color:#f37418}
+.arena-sub{
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:#7c3aed;
+  margin-bottom:18px;
+}
+
 .gameLink{
   display:block;
   padding:16px 18px;
@@ -103,7 +122,41 @@ body{
   letter-spacing:.01em;
 }
 
-/* Swish Memory sits on its own, centered, ahead of the grid below. */
+/* Each quarter reads like a real scoreboard entry — the quarter
+   number is the dominant visual element, not a small label, so the
+   grid reads at a glance as a scoreboard rather than a plain list. */
+.quarter-badge{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  margin-bottom:2px;
+}
+.quarter-num{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:1.6rem;
+  font-weight:900;
+  font-style:italic;
+  color:#f37418;
+  line-height:1;
+  text-shadow:0 0 16px rgba(243,116,24,.6);
+}
+.quarter-label{
+  font-size:.6rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#7c3aed;
+}
+.game-name{
+  display:block;
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+
+/* Swish Memory sits on its own, centered, ahead of the grid below —
+   framed as Overtime, the natural basketball beat after four
+   quarters. */
 .featuredRow{
   display:flex;
   justify-content:center;
@@ -117,6 +170,15 @@ body{
   border-color:rgba(255,155,80,.55);
 }
 .gameLink.featured .tag{text-align:center}
+.overtime-label{
+  font-size:.6rem;
+  font-weight:900;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#00e5ff;
+  margin-bottom:4px;
+  display:block;
+}
 
 .gameGrid{
   display:grid;
@@ -148,36 +210,44 @@ footer{
 <div id="stage">
   <div id="panel">
     <a class="back-btn" href="hooporia-lab.html">← Back</a>
-    <div class="subtitle">Choose a training mode</div>
+    <div class="subtitle">Choose Your Basketball Memory Gameboard</div>
 
     <div class="featuredRow">
       <a class="gameLink featured" href="basketball-flash-sphere.html">
-        Basketball Flash Reaction
+        Basketball Flash Memory
         <span class="tag">A basketball flashes once, then vanishes — read it, remember it, and swish as many threes as you can in 60 seconds</span>
       </a>
     </div>
 
-    <div class="gameGrid" style="margin-top:14px">
+    <div class="arena-title">THE BASKETBALL <span>MEMORY ARENA</span></div>
+    <div class="arena-sub">4 Quarters of Memory Action</div>
+
+    <div class="gameGrid">
       <a class="gameLink" href="basketball-recall.html">
-        Basketball Recall
+        <div class="quarter-badge"><span class="quarter-num">1st</span><span class="quarter-label">Quarter</span></div>
+        <span class="game-name">Recall</span>
         <span class="tag">Watch a sequence, then tap it back in order</span>
       </a>
       <a class="gameLink" href="basketball-reflex.html">
-        Basketball Reflex
+        <div class="quarter-badge"><span class="quarter-num">2nd</span><span class="quarter-label">Quarter</span></div>
+        <span class="game-name">Reflex</span>
         <span class="tag">Find and tap every spot that flashed — order doesn't matter</span>
       </a>
       <a class="gameLink" href="basketball-replay.html">
-        Basketball Replay
+        <div class="quarter-badge"><span class="quarter-num">3rd</span><span class="quarter-label">Quarter</span></div>
+        <span class="game-name">Replay</span>
         <span class="tag">Watch a sequence play out, then replay it back</span>
       </a>
       <a class="gameLink" href="basketball-recognition.html">
-        Basketball Recognition
+        <div class="quarter-badge"><span class="quarter-num">4th</span><span class="quarter-label">Quarter</span></div>
+        <span class="game-name">Recognition</span>
         <span class="tag">Spot which cell changed between two patterns</span>
       </a>
     </div>
 
-    <div class="featuredRow" style="margin-top:14px;margin-bottom:0">
+    <div class="featuredRow" style="margin-top:20px;margin-bottom:0">
       <a class="gameLink featured" href="shoot-training-loop.html">
+        <span class="overtime-label">Overtime</span>
         Swish Memory
         <span class="tag">Watch the swish, on repeat — until your shot just finishes what you see</span>
       </a>
