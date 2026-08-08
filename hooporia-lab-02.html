@@ -93,6 +93,24 @@ body{
   color:#7c3aed;
   margin-bottom:18px;
 }
+.fullgame-btn{
+  display:block;
+  width:100%;
+  max-width:440px;
+  margin:0 auto 26px;
+  padding:16px 20px;
+  border:none;
+  border-radius:16px;
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+  color:#fff;
+  font-size:.95rem;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 40px rgba(124,58,237,.6);
+}
+.fullgame-btn:active{transform:scale(.98)}
 
 .gameLink{
   display:block;
@@ -221,6 +239,7 @@ footer{
 
     <div class="arena-title">THE BASKETBALL <span>MEMORY ARENA</span></div>
     <div class="arena-sub">4 Quarters of Memory Action</div>
+    <button class="fullgame-btn" id="fullGameBtn">🏀 PLAY THE FULL GAME — ALL 4 QUARTERS</button>
 
     <div class="gameGrid">
       <a class="gameLink" href="basketball-recall.html">
@@ -266,6 +285,16 @@ soundBtn.addEventListener('click',function(e){
   muted=!muted;
   soundBtn.textContent=muted?'🔇':'🔊';
   soundBtn.style.opacity=muted?'.55':'1';
+});
+
+// Starts a real, tracked four-quarter run — a fresh scoreboard, and a
+// flag each quarter game checks for on its own end screen. Standalone
+// play (clicking straight into any single quarter from this page)
+// never sets this, so nothing changes for solo practice.
+document.getElementById('fullGameBtn').addEventListener('click',function(){
+  sessionStorage.setItem('hoop-fullgame-active','1');
+  sessionStorage.setItem('hoop-quarter-scores',JSON.stringify({q1:0,q2:0,q3:0,q4:0}));
+  window.location.href='basketball-recall.html';
 });
 })();
 </script>
