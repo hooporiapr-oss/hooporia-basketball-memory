@@ -120,19 +120,8 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
    (which can grow tall on its own, since its tap log covers a full
    game) gets its own column; Career and Recent Games — both more
    compact and predictable in height — share the other. */
-/* Real depth, not just width — in VR specifically, this two-column
-   layout was already reading as spatial on its own; genuine CSS 3D
-   pushes that further. Last Game — the most immediate, just-happened
-   result — sits slightly forward and angled toward the viewer.
-   Career and Recent Games sit a touch further back, angled away, like
-   a second panel floating behind the first rather than printed flat
-   alongside it. Subtle on purpose: enough to read as real depth, not
-   enough to distort the numbers or feel gimmicky on a flat monitor. */
-.box-grid{width:100%;max-width:1000px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;perspective:1600px}
+.box-grid{width:100%;max-width:1000px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
 .box-section{width:100%;margin-bottom:24px}
-.col-near{transform:translateZ(80px) rotateY(6deg);transform-origin:right center}
-.col-far{transform:translateZ(-45px) rotateY(-6deg);transform-origin:left center}
-@media(max-width:760px){.box-grid{grid-template-columns:1fr;perspective:none}.col-near,.col-far{transform:none}}
 .box-section-label{font-size:.65rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#ffd35a;margin-bottom:8px;text-align:left;padding-left:4px}
 .box-table{width:100%;border-collapse:collapse;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.3);border-radius:12px;overflow:hidden}
 .box-table th{background:rgba(124,58,237,.18);color:#a78bfa;font-size:.6rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:8px 6px;text-align:center;border-bottom:1px solid rgba(124,58,237,.3)}
@@ -255,7 +244,7 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
       <div class="tap-log" id="lastGameTapLog"></div>
     </div>
 
-    <div class="col-far">
+    <div class="col-far" id="careerColumn">
       <div class="box-section">
         <div class="box-section-label">Career</div>
         <table class="box-table">
@@ -451,6 +440,18 @@ function renderTapLog(container,shots,finalScore){
 function renderBoxScore(lastGame){
   var d=loadBoxData();
   if(typeof d.totalMisses!=='number')d.totalMisses=0;
+
+  // Career and Recent Games are stored per-device — genuinely useful
+  // for solo practice on someone's own phone or computer, but
+  // misleading at a shared event kiosk where a different kid plays
+  // every few minutes. In event mode, only this one just-finished
+  // game is shown; the grid collapses to a single centered column
+  // rather than leaving an empty gap where Career used to sit.
+  if(IS_EVENT_MODE){
+    $('careerColumn').style.display='none';
+    document.querySelector('.box-grid').style.gridTemplateColumns='1fr';
+    document.querySelector('.box-grid').style.maxWidth='500px';
+  }
 
   var lastShots=null,lastFinalScore=0;
   if(lastGame){
