@@ -457,8 +457,13 @@ function roundSuccess(){
   }else{
     if(g.cellCount>g.best)g.best=g.cellCount;
     g.cellCount++;
+    // Escalation bonus — reaching a new level is its own reward, not
+    // just folded into the next round's normal score. Grows naturally
+    // with how far the pattern has climbed.
+    var escBonus=g.cellCount*10;
+    g.sc+=escBonus;
     updateHUD();
-    msg('✅ '+(attemptNum===0?'CORRECT! ':'CORRECT'+ptsLabel)+'PATTERN GROWS...','rcg-perfect');
+    msg('✅ '+(attemptNum===0?'CORRECT! ':'CORRECT'+ptsLabel)+'PATTERN GROWS! +'+escBonus+' BONUS','rcg-perfect');
     timers.push(setTimeout(function(){resetCells();autoNextRound()},700));
   }
 }
@@ -508,7 +513,7 @@ function restartGame(){
 
 $('recog_actBtn').onclick=startRound;
 buildCourt();
-$('recognitionExitBtn').onclick=function(){window.location.href='hooporia-lab.html';};
+$('recognitionExitBtn').onclick=function(){window.location.href='index.html';};
 })();
 </script>
 </body>
