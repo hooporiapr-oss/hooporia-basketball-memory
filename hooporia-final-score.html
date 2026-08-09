@@ -113,9 +113,12 @@ footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
 .overtime-label{display:block;font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#00e5ff;margin-bottom:4px}
 .overtime-name{display:block;font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:4px}
 .overtime-tag{display:block;font-size:.78rem;color:#c9b8a8}
+
+.exit-btn{position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none;z-index:60}
 </style>
 </head>
 <body>
+<a class="exit-btn" href="hooporia-lab-02.html">← Exit</a>
 <div id="stage">
   <div id="panel">
     <div class="buzzer">🔔 Final Buzzer</div>
@@ -132,9 +135,6 @@ footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
       <div class="total-label">Final Score</div>
       <div class="total-val" id="fsTotal">0</div>
     </div>
-
-    <button class="action-btn primary" id="playAgainBtn">🏀 PLAY AGAIN — ALL 4 QUARTERS</button>
-    <a class="action-btn secondary" href="hooporia-lab-02.html">← Back to the Arena</a>
 
     <div class="overtime-card">
       <a href="shoot-training-loop.html">
@@ -160,12 +160,6 @@ document.getElementById('fsQ2').textContent=scores.q2;
 document.getElementById('fsQ3').textContent=scores.q3;
 document.getElementById('fsQ4').textContent=scores.q4;
 document.getElementById('fsTotal').textContent=total;
-
-document.getElementById('playAgainBtn').addEventListener('click',function(){
-  sessionStorage.setItem('hoop-fullgame-active','1');
-  sessionStorage.setItem('hoop-quarter-scores',JSON.stringify({q1:0,q2:0,q3:0,q4:0}));
-  window.location.href='basketball-recall.html';
-});
 
 // The final buzzer — a real, harsh sustained horn tone, same sound
 // used at the end of a 60-second contest elsewhere on the platform.
