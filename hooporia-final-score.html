@@ -102,6 +102,17 @@ body{
 .action-btn.secondary{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.25)}
 
 footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
+
+.overtime-card{
+  margin-top:18px;padding:16px 18px;border-radius:14px;
+  border:1px solid rgba(255,155,80,.4);
+  background:linear-gradient(135deg,rgba(243,116,24,.12),rgba(255,255,255,.03));
+  text-align:center;
+}
+.overtime-card a{text-decoration:none;display:block}
+.overtime-label{display:block;font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#00e5ff;margin-bottom:4px}
+.overtime-name{display:block;font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:4px}
+.overtime-tag{display:block;font-size:.78rem;color:#c9b8a8}
 </style>
 </head>
 <body>
@@ -125,6 +136,14 @@ footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
     <button class="action-btn primary" id="playAgainBtn">🏀 PLAY AGAIN — ALL 4 QUARTERS</button>
     <a class="action-btn secondary" href="hooporia-lab-02.html">← Back to the Arena</a>
 
+    <div class="overtime-card">
+      <a href="shoot-training-loop.html">
+        <span class="overtime-label">Overtime</span>
+        <span class="overtime-name">Swish Memory</span>
+        <span class="overtime-tag">Watch the swish, on repeat — until your shot just finishes what you see</span>
+      </a>
+    </div>
+
     <footer>Gostar Digital LLC</footer>
   </div>
 </div>
@@ -147,6 +166,40 @@ document.getElementById('playAgainBtn').addEventListener('click',function(){
   sessionStorage.setItem('hoop-quarter-scores',JSON.stringify({q1:0,q2:0,q3:0,q4:0}));
   window.location.href='basketball-recall.html';
 });
+
+// The final buzzer — a real, harsh sustained horn tone, same sound
+// used at the end of a 60-second contest elsewhere on the platform.
+// Sounds the instant this page appears, since that's the true "game
+// over" moment — the buzzer belongs to the scoreboard arriving, not
+// to a transition that gets cut off by the page navigation itself.
+var beatAudioCtx=null;
+function getBeatAC(){if(!beatAudioCtx){try{beatAudioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}return beatAudioCtx}
+function playBuzzer(){
+  var c=getBeatAC();if(!c)return;
+  try{
+    if(c.state==='suspended')c.resume();
+    var o=c.createOscillator(),g=c.createGain();
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(220,c.currentTime);
+    g.gain.setValueAtTime(0.001,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.55,c.currentTime+0.05);
+    g.gain.setValueAtTime(0.55,c.currentTime+1.1);
+    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1.4);
+    o.connect(g);g.connect(c.destination);
+    o.start();o.stop(c.currentTime+1.45);
+
+    var o2=c.createOscillator(),g2=c.createGain();
+    o2.type='square';
+    o2.frequency.setValueAtTime(221,c.currentTime);
+    g2.gain.setValueAtTime(0.001,c.currentTime);
+    g2.gain.exponentialRampToValueAtTime(0.28,c.currentTime+0.05);
+    g2.gain.setValueAtTime(0.28,c.currentTime+1.1);
+    g2.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1.4);
+    o2.connect(g2);g2.connect(c.destination);
+    o2.start();o2.stop(c.currentTime+1.45);
+  }catch(e){}
+}
+playBuzzer();
 })();
 </script>
 </body>
