@@ -112,127 +112,11 @@ body{
 }
 .fullgame-btn:active{transform:scale(.98)}
 
-.rules-btn{
-  display:block;
-  width:100%;
-  max-width:440px;
-  margin:0 auto 14px;
-  padding:13px 20px;
-  border:1px solid rgba(255,211,90,.4);
-  border-radius:14px;
-  background:rgba(255,211,90,.06);
-  color:#ffd35a;
-  text-decoration:none;
-  text-align:center;
-  font-size:.82rem;
-  font-weight:900;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  cursor:pointer;
-}
-.rules-btn:active{transform:scale(.98)}
-
-.gameLink{
-  display:block;
-  padding:16px 18px;
-  border-radius:14px;
-  border:1px solid rgba(255,126,32,.35);
-  background:rgba(255,255,255,.04);
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
-  font-size:1.02rem;
-  letter-spacing:.02em;
-  text-align:left;
-  transition:background .15s,border-color .15s,transform .1s;
-}
-.gameLink:hover{
-  background:rgba(255,126,32,.12);
-  border-color:rgba(255,126,32,.7);
-}
-.gameLink:active{transform:scale(.98)}
-.gameLink .tag{
-  display:block;
-  font-size:.72rem;
-  font-weight:400;
-  color:#c9b8a8;
-  margin-top:3px;
-  letter-spacing:.01em;
-}
-
-/* Each quarter reads like a real scoreboard entry — the quarter
-   number is the dominant visual element, not a small label, so the
-   grid reads at a glance as a scoreboard rather than a plain list. */
-.quarter-badge{
-  display:flex;
-  align-items:baseline;
-  gap:8px;
-  margin-bottom:2px;
-}
-.quarter-num{
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:1.6rem;
-  font-weight:900;
-  font-style:italic;
-  color:#f37418;
-  line-height:1;
-  text-shadow:0 0 16px rgba(243,116,24,.6);
-}
-.quarter-label{
-  font-size:.6rem;
-  font-weight:900;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:#7c3aed;
-}
-.game-name{
-  display:block;
-  font-size:1.05rem;
-  font-weight:900;
-  letter-spacing:.02em;
-}
-
-/* Swish Memory sits on its own, centered, ahead of the grid below —
-   framed as Overtime, the natural basketball beat after four
-   quarters. */
-.featuredRow{
-  display:flex;
-  justify-content:center;
-  margin-bottom:14px;
-}
-.gameLink.featured{
-  width:100%;
-  max-width:420px;
-  text-align:center;
-  background:linear-gradient(135deg,rgba(243,116,24,.16),rgba(255,255,255,.04));
-  border-color:rgba(255,155,80,.55);
-}
-.gameLink.featured .tag{text-align:center}
-.overtime-label{
-  font-size:.6rem;
-  font-weight:900;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  color:#00e5ff;
-  margin-bottom:4px;
-  display:block;
-}
-
-.gameGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
 footer{
   margin-top:24px;
   font-size:.72rem;
   color:#6b5d52;
   letter-spacing:.02em;
-}
-
-@media (max-width:520px){
-  .gameGrid{grid-template-columns:1fr}
 }
 
 #soundToggle{
@@ -248,13 +132,6 @@ footer{
 <div id="stage">
   <div id="panel">
     <a class="back-btn" href="hooporia-lab.html">← Back</a>
-
-    <div class="featuredRow">
-      <a class="gameLink featured" href="basketball-flash-sphere.html">
-        Basketball Flash Memory
-        <span class="tag">A basketball flashes once, then vanishes — read it, remember it, and swish as many threes as you can in 60 seconds</span>
-      </a>
-    </div>
 
     <div class="arena-title">MEMORY <span>BASKETBALL</span></div>
     <div class="arena-sub">4 Quarters of Memory Action</div>
