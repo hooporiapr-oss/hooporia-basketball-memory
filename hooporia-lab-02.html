@@ -112,6 +112,33 @@ body{
 }
 .fullgame-btn:active{transform:scale(.98)}
 
+/* Individual quarter cards — standalone practice for any one of the
+   4 games, sitting above the full-game button so a player can drill
+   a specific quarter before (or instead of) running the whole chain. */
+.quarters-label{
+  font-size:.68rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:#7d7268;margin-bottom:12px;
+}
+.quarter-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  max-width:440px;margin:0 auto 22px;
+}
+.quarter-card{
+  display:block;text-decoration:none;padding:14px 12px;border-radius:14px;
+  border:1.5px solid rgba(124,58,237,.35);background:rgba(124,58,237,.08);
+  text-align:left;transition:background .12s,border-color .12s,transform .08s;
+}
+.quarter-card:active{transform:scale(.97);background:rgba(124,58,237,.16)}
+.quarter-num{
+  font-size:.62rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  color:#a855f7;margin-bottom:4px;
+}
+.quarter-name{
+  font-size:.98rem;font-weight:900;font-style:italic;letter-spacing:.01em;
+  text-transform:uppercase;color:#fff;margin-bottom:4px;line-height:1.1;
+}
+.quarter-desc{font-size:.66rem;color:#c9b8a8;line-height:1.35}
+
 footer{
   margin-top:24px;
   font-size:.72rem;
@@ -155,6 +182,31 @@ footer{
 
     <div class="arena-title">MEMORY <span>BASKETBALL</span></div>
     <div class="arena-sub">4 Quarters of Memory Action</div>
+
+    <div class="quarters-label">Practice A Single Quarter</div>
+    <div class="quarter-grid">
+      <a class="quarter-card" href="basketball-recall.html">
+        <div class="quarter-num">Q1</div>
+        <div class="quarter-name">Recall</div>
+        <div class="quarter-desc">Remember the sequence, then repeat it back.</div>
+      </a>
+      <a class="quarter-card" href="basketball-reflex.html">
+        <div class="quarter-num">Q2</div>
+        <div class="quarter-name">Reflex</div>
+        <div class="quarter-desc">React fast — the shot clock isn't waiting.</div>
+      </a>
+      <a class="quarter-card" href="basketball-replay.html">
+        <div class="quarter-num">Q3</div>
+        <div class="quarter-name">Replay</div>
+        <div class="quarter-desc">Watch the play unfold, then run it yourself.</div>
+      </a>
+      <a class="quarter-card" href="basketball-recognition.html">
+        <div class="quarter-num">Q4</div>
+        <div class="quarter-name">Recognition</div>
+        <div class="quarter-desc">Spot the pattern before the buzzer sounds.</div>
+      </a>
+    </div>
+
     <button class="fullgame-btn" id="fullGameBtn">🏀 PLAY THE FULL GAME — ALL 4 QUARTERS</button>
 
     <footer>Gostar Digital LLC</footer>
