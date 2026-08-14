@@ -423,7 +423,7 @@ function resizeCourtToFit(){
 window.addEventListener('resize',resizeCourtToFit);
 
 $('menuBtn').onclick=function(){stopFullStrobe();stopRecallTimer();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
-$('seqExitBtn').onclick=function(){window.location.href='hooporia-lab.html';};
+$('seqExitBtn').onclick=function(){window.location.href='basketball-recall.html';};
 $('fsBtnTop').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 var cells=[];
