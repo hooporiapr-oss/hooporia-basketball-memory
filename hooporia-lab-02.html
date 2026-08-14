@@ -235,11 +235,19 @@ soundBtn.addEventListener('click',function(e){
 // flag each quarter game checks for on its own end screen. Standalone
 // play (clicking straight into any single quarter from this page)
 // never sets this, so nothing changes for solo practice.
-document.getElementById('fullGameBtn').addEventListener('click',function(){
+function showNameEntry(){
   document.getElementById('stage').style.display='none';
   document.getElementById('screen-name-entry').style.display='flex';
   setTimeout(function(){document.getElementById('playerNameInput').focus()},50);
-});
+}
+document.getElementById('fullGameBtn').addEventListener('click',showNameEntry);
+
+// Reached from another game's own "Full Game" switcher slot — skips
+// the hub view entirely and goes straight to naming a player, the
+// same starting point every other switcher slot already lands on.
+if(new URLSearchParams(window.location.search).get('fullgame')==='1'){
+  showNameEntry();
+}
 
 document.getElementById('nameContinueBtn').addEventListener('click',function(){
   var name=document.getElementById('playerNameInput').value.trim();
