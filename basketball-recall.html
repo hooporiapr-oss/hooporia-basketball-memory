@@ -171,6 +171,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   <button class="big-btn" id="seqStartBtn">▶ ENTER THE GAMEBOARD</button>
   <button class="box-open-btn" id="openBoxBtn">🏆 THE STANDINGS</button>
   <div class="game-switcher">
+    <a class="switcher-btn game-active" href="mobile-the-handle.html">The<br>Handle</a>
     <span class="switcher-btn game-current">Q1<br>Recall</span>
     <a class="switcher-btn game-active" href="basketball-reflex.html">Q2<br>Reflex</a>
     <a class="switcher-btn game-active" href="basketball-replay.html">Q3<br>Replay</a>
@@ -423,7 +424,7 @@ function resizeCourtToFit(){
 window.addEventListener('resize',resizeCourtToFit);
 
 $('menuBtn').onclick=function(){stopFullStrobe();stopRecallTimer();$('screen-game').style.display='none';$('screen-intro').style.display='flex'};
-$('seqExitBtn').onclick=function(){window.location.href='basketball-recall.html';};
+$('seqExitBtn').onclick=function(){window.location.href='mobile-the-handle.html';};
 $('fsBtnTop').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 var cells=[];
