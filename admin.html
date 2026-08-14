@@ -114,7 +114,7 @@
   <div id="dash">
     <div class="prod-tabs">
       <button class="prod-tab active" id="tab-ritnome" onclick="switchProduct('ritnome')">⚡ Ritnome</button>
-      <button class="prod-tab" id="tab-hooporia" onclick="switchProduct('hooporia')">🏀 Hooporia</button>
+      <button class="prod-tab" id="tab-hooporia" onclick="switchProduct('hooporia')">🏀 Basketball Memory</button>
       <button class="prod-tab" id="tab-mobile" onclick="switchProduct('mobile')">📱 Mobile</button>
       <button class="prod-tab" id="tab-bpm-basketball" onclick="switchProduct('bpm-basketball')">🎯 BPM Basketball</button>
       <button class="prod-tab" id="tab-never-miss-a-shot" onclick="switchProduct('never-miss-a-shot')">🏀 Never Miss A Shot</button>
@@ -275,7 +275,7 @@ window.switchProduct = function(product){
   $('tab-never-miss-a-shot').className = 'prod-tab' + (product==='never-miss-a-shot' ? ' active' : '');
   $('tab-dynamic-basketball').className = 'prod-tab' + (product==='dynamic-basketball' ? ' active' : '');
   $('mobile-note').className = 'mobile-note' + (product==='mobile' ? ' show' : '');
-  var label = product==='ritnome' ? '(Ritnome)' : product==='hooporia' ? '(Hooporia)' : product==='mobile' ? '(Mobile)' : product==='bpm-basketball' ? '(BPM Basketball)' : product==='never-miss-a-shot' ? '(Never Miss A Shot)' : '(Dynamic Basketball)';
+  var label = product==='ritnome' ? '(Ritnome)' : product==='hooporia' ? '(Basketball Memory)' : product==='mobile' ? '(Mobile)' : product==='bpm-basketball' ? '(BPM Basketball)' : product==='never-miss-a-shot' ? '(Never Miss A Shot)' : '(Dynamic Basketball)';
   $('add-product-label').textContent = label;
   $('list-product-label').textContent = label;
   loadLicenses();
@@ -314,8 +314,8 @@ var STANDINGS_BY_PRODUCT = {
     { name: 'The Handle', table: 'vr_the_handle_standings' }
   ],
   'hooporia': [
-    { name: 'The Handle', table: 'hooporia_handle_standings' },
-    { name: 'Basketball Recall', table: 'hooporia_basketball_recall_standings' }
+    { name: 'Basketball Recall', table: 'hooporia_basketball_recall_standings' },
+    { name: 'Basketball Reflex', table: 'hooporia_basketball_reflex_standings' }
   ],
   'mobile': [
     { name: 'The Handle', table: 'ritnome_mobile_handle_standings' }
