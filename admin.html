@@ -119,6 +119,7 @@
       <button class="prod-tab" id="tab-bpm-basketball" onclick="switchProduct('bpm-basketball')">🎯 BPM Basketball</button>
       <button class="prod-tab" id="tab-never-miss-a-shot" onclick="switchProduct('never-miss-a-shot')">🏀 Never Miss A Shot</button>
       <button class="prod-tab" id="tab-dynamic-basketball" onclick="switchProduct('dynamic-basketball')">🥽 Dynamic Basketball</button>
+      <button class="prod-tab" id="tab-the-handle" onclick="switchProduct('the-handle')">🧠 The Handle</button>
     </div>
 
     <div class="mobile-note" id="mobile-note">⚠️ Mobile codes work differently: a device stays unlocked permanently once it enters a valid code, using local on-device storage rather than a per-visit check. Revoking or deleting a code here blocks it for any <b>new</b> device — it will not retroactively lock out a device that already unlocked with it.</div>
@@ -274,8 +275,9 @@ window.switchProduct = function(product){
   $('tab-bpm-basketball').className = 'prod-tab' + (product==='bpm-basketball' ? ' active' : '');
   $('tab-never-miss-a-shot').className = 'prod-tab' + (product==='never-miss-a-shot' ? ' active' : '');
   $('tab-dynamic-basketball').className = 'prod-tab' + (product==='dynamic-basketball' ? ' active' : '');
+  $('tab-the-handle').className = 'prod-tab' + (product==='the-handle' ? ' active' : '');
   $('mobile-note').className = 'mobile-note' + (product==='mobile' ? ' show' : '');
-  var label = product==='ritnome' ? '(Ritnome)' : product==='hooporia' ? '(Basketball Memory)' : product==='mobile' ? '(Mobile)' : product==='bpm-basketball' ? '(BPM Basketball)' : product==='never-miss-a-shot' ? '(Never Miss A Shot)' : '(Dynamic Basketball)';
+  var label = product==='ritnome' ? '(Ritnome)' : product==='hooporia' ? '(Basketball Memory)' : product==='mobile' ? '(Mobile)' : product==='bpm-basketball' ? '(BPM Basketball)' : product==='never-miss-a-shot' ? '(Never Miss A Shot)' : product==='the-handle' ? '(The Handle)' : '(Dynamic Basketball)';
   $('add-product-label').textContent = label;
   $('list-product-label').textContent = label;
   loadLicenses();
@@ -313,7 +315,12 @@ var STANDINGS_BY_PRODUCT = {
     { name: 'Let It Fly.', table: 'vr_let_it_fly_standings' },
     { name: 'The Handle', table: 'vr_the_handle_standings' }
   ],
+  'the-handle': [
+    { name: 'VR', table: 'vr_the_handle_standings' },
+    { name: 'Mobile', table: 'ritnome_mobile_handle_standings' }
+  ],
   'hooporia': [
+    { name: 'The Handle', table: 'ritnome_mobile_handle_standings' },
     { name: 'Basketball Recall', table: 'hooporia_basketball_recall_standings' },
     { name: 'Basketball Reflex', table: 'hooporia_basketball_reflex_standings' },
     { name: 'Basketball Replay', table: 'hooporia_basketball_replay_standings' },
