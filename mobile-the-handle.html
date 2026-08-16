@@ -8,7 +8,7 @@ if (localStorage.getItem('rct-mobile-pass') !== '1' && sessionStorage.getItem('h
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>THE HANDLE | Dynamic Basketball</title>
+<title>THE HANDLE | Hooporia</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;color:#fff;background:#000;user-select:none;-webkit-user-select:none;touch-action:manipulation}
@@ -45,23 +45,28 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 .tap-particle{position:absolute;width:7px;height:7px;border-radius:50%;pointer-events:none;z-index:50}
 @keyframes particleBurst{0%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 @keyframes confettiFall{0%{transform:translateY(-100px) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(100vh) rotate(720deg) scale(0.5);opacity:0}}
+@keyframes courtBorderGlow{
+  0%,100%{
+    border-color:rgba(200,220,230,.28);
+    box-shadow:0 0 60px rgba(200,220,230,.18),inset 0 0 40px rgba(200,220,230,.06),0 20px 60px rgba(0,0,0,.8);
+  }
+  50%{
+    border-color:rgba(210,230,240,.65);
+    box-shadow:0 0 90px rgba(200,220,230,.4),inset 0 0 55px rgba(200,220,230,.16),0 20px 60px rgba(0,0,0,.8);
+  }
+}
 
-/* The 5 balls ARE the stimulus AND the input — no separate flashing
-   target. Each one lights up in sequence during watch, then the same
-   fixed positions are what the player taps back. Nothing here ever
-   resizes or repositions mid-round — the entire grid is one static,
-   fixed layout for the whole game, exactly the property that made
-   the other four games hold steady in a VR browser. */
 .court{
   position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;
-  display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);
-  gap:8px;width:min(88vw,420px);height:min(88vw,420px);
-  border:2px solid rgba(124,58,237,.4);border-radius:14px;padding:8px;
-  background-color:#1a0f2e;
-  box-shadow:0 0 60px rgba(124,58,237,.25),inset 0 0 40px rgba(124,58,237,.05),0 20px 60px rgba(0,0,0,.8);
+  display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(5,1fr);
+  gap:8px;width:min(92vw,560px);height:min(65.7vw,400px);
+  border:2px solid rgba(200,220,230,.28);border-radius:14px;padding:8px;
+  animation:courtBorderGlow 2.8s ease-in-out infinite;
+  background-color:rgba(190,215,225,.05);
 }
-.cell-filler{border-radius:6px;background:rgba(124,58,237,.05);border:1.5px solid rgba(124,58,237,.15)}
-.choice-btn{border:3px solid rgba(124,58,237,.35);background:transparent;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .08s;padding:0;width:100%;height:100%;
+.court-rim-net{position:absolute;inset:0;pointer-events:none;z-index:1;width:100%;height:100%}
+.cell-filler{border-radius:6px;background:rgba(190,215,225,.04);border:1.5px solid rgba(200,220,230,.14)}
+.choice-btn{border:3px solid rgba(200,220,230,.3);background:transparent;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .08s;padding:0;width:100%;height:100%;
   background:radial-gradient(circle at 35% 32%,#3a2a1a,#241606 85%);
 }
 .choice-btn.lit{
@@ -110,13 +115,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 .box-title{font-size:1.7rem;font-weight:900;font-style:italic;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-shadow:0 0 40px rgba(255,140,0,.8);margin-bottom:2px}
 .box-title span{color:#00e5ff}
 .box-sub{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:#7c3aed;margin-bottom:22px}
-/* Landscape layout — a wide, two-column grid rather than one long
-   narrow strip stacking straight down. In VR especially, a page that
-   spreads sideways within the comfortable field of view beats one
-   that demands scrolling far down to reach everything. Last Game
-   (which can grow tall on its own, since its tap log covers a full
-   game) gets its own column; Career and Recent Games — both more
-   compact and predictable in height — share the other. */
 .box-grid{width:100%;max-width:1000px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
 .box-section{width:100%;margin-bottom:24px}
 .box-section-label{font-size:.65rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#ffd35a;margin-bottom:8px;text-align:left;padding-left:4px}
@@ -132,15 +130,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 .box-recent-row{font-size:.75rem;color:#9fb3c8;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;padding:8px 10px;cursor:pointer}
 .box-recent-row:hover{background:rgba(124,58,237,.08)}
 .box-recent-row .expand-hint{color:#7c3aed;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-left:8px}
-/* Tap-by-tap — the full, ordered history of a single game, not just
-   its summary numbers. A real reference point for how the total
-   points actually built up, hit by hit. */
-/* A real timeline, not a wrapped grid — each tap recedes a little
-   further into the distance than the one before it, curving gently
-   up and away, shrinking and fading as it goes. The same depth
-   language as the two-column layout, applied to a single game's own
-   sequence of taps, so a full game reads as a path you look down
-   rather than a spreadsheet row. */
 .tap-log{display:flex;flex-wrap:wrap;gap:4px;padding:10px;background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.25);border-radius:12px;margin-top:8px}
 .tap-chip{flex:0 0 auto;min-width:44px;padding:4px 6px;border-radius:7px;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:.62rem;font-weight:900;line-height:1.3}
 .tap-chip.hit{background:rgba(124,58,237,.22);border:1px solid rgba(124,58,237,.5);color:#c4b5fd}
@@ -154,11 +143,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 .box-recent-row b{color:#ffd35a}
 .box-open-btn{width:100%;max-width:420px;height:52px;border:2px solid rgba(0,229,255,.5);background:rgba(0,229,255,.1);border-radius:14px;color:#00e5ff;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:6px}
 
-/* Game switcher — every game's start screen carries the same 4-slot
-   row, so any game (and its own standings, one tap further in) is
-   reachable from any other game without a hub in between. Slots for
-   games not yet built stay visibly present but disabled — an honest
-   "coming soon", not a broken link. */
 .game-switcher{display:flex;gap:8px;max-width:420px;width:100%;margin:18px auto 0}
 .switcher-btn{flex:1;padding:10px 4px;border-radius:12px;text-decoration:none;text-align:center;font-size:.62rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;line-height:1.3}
 .switcher-btn.game-active{border:2px solid rgba(255,107,53,.5);background:rgba(255,107,53,.12);color:#ffb38a}
@@ -249,17 +233,10 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 
 <!-- END -->
 <div id="screen-end">
-  <button class="intro-back" id="endBackBtn" style="cursor:pointer;font-family:inherit">← Back</button>
   <div class="final-num" id="endNum">0</div>
   <div class="final-label">Total Score</div>
-  <div class="final-bpm-big" id="endBpm"></div>
-  <div class="final-acc" id="endAcc"></div>
-  <h2 id="endHead">Drill Complete!</h2>
-  <div id="endSub">Great choices. Next player, beat this number!</div>
-  <button class="next-player-btn" id="nextPlayerBtn">▶ Next Player</button>
-  <a href="basketball-recall.html" style="display:block;margin-top:12px;max-width:280px;margin-left:auto;margin-right:auto;text-decoration:none;text-align:center;padding:14px 24px;border-radius:100px;background:linear-gradient(135deg,#00e5ff,#7c3aed);color:#0a0a12;font-weight:900;letter-spacing:1px;font-size:.95rem">▶ NEXT GAME</a>
+  <button class="next-player-btn" id="nextPlayerBtn">← Back</button>
   <button class="box-open-btn" id="endStandingsBtn" style="margin-top:12px">🏆 THE STANDINGS</button>
-  <div class="session-line" id="sessionLine"></div>
 </div>
 
 <script>
@@ -268,9 +245,6 @@ var BEST_ROUND_KEY='vr-the-handle-best-round';
 
 function $(id){return document.getElementById(id)}
 
-// Translations for the intro screen only — the title "Shoot It. Own It."
-// stays as-is in both languages, since it's a brand name, not a
-// description, same as "Lights Out" and "Flash Basketball" elsewhere.
 var INTRO_I18N={
   en:{
     fullscreen:'⛶ Fullscreen',
@@ -307,13 +281,7 @@ $('introLangES').addEventListener('click',function(){
   applyIntroTranslations();
 });
 
-// Name entry — required before every turn, since standings only mean
-// something if every score is honestly attributed to a real player.
 var currentPlayerName='';
-// Start reads the name directly from the input sitting right on the
-// intro screen and launches straight into the game — no separate
-// name-entry screen to transition through first. One fewer screen
-// swap is one fewer chance for a VR browser's layout to misbehave.
 function handleStartClick(){
   var nameField=$('playerNameInputMain');
   var name=nameField.value.trim();
@@ -334,27 +302,26 @@ var score=0,best=0;
 var bpm=120,drumCount=5;
 var sessionBest=0, playersThisSession=0;
 
-// ══════════════════════════════════════════════════════
-//  5×5 COURT TEST — same proven court-rendering approach the memory
-//  games already use (reshaped from 5×10 to 5×5), but only 5 of the
-//  25 cells are ever actually part of the game: dead center, plus
-//  one cell in from each corner on the top and bottom rows. The rest
-//  of the grid exists purely as court texture/filler, never lights
-//  up, never tappable. Everything below this point — the actual
-//  Handle game logic — is completely unchanged from the proven file
-//  this was built from; only these 5 cells' visual identity and DOM
-//  IDs (slot0–slot4) had to exist before that logic runs.
-// ══════════════════════════════════════════════════════
 (function buildFiveCellCourt(){
   var court=$('court');
+  // The rim/net graphic is injected as real, inline SVG markup — not a
+  // CSS data-URI background. A CSS background-image built from a large,
+  // complex encoded SVG string is a genuinely fragile thing to carry
+  // through copy/paste, uploads, or different hosting environments; if
+  // that one giant string gets corrupted anywhere along the way, it can
+  // silently invalidate the ENTIRE .court CSS rule it sits inside — not
+  // just the image, but the grid's own layout/sizing too, leaving a
+  // blank screen while the game logic underneath keeps running
+  // normally. Real inline SVG in the DOM doesn't carry that risk.
+  court.insertAdjacentHTML('afterbegin', '<svg class="court-rim-net" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rimGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a4d"/><stop offset="50%" stop-color="#e8460f"/><stop offset="100%" stop-color="#961f02"/></linearGradient><radialGradient id="openGrad" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#3a2a1c"/><stop offset="100%" stop-color="#150d08"/></radialGradient></defs><style>.net-line{animation:netGlow 2.2s ease-in-out infinite}.rim-ring{animation:rimGlow 2.2s ease-in-out infinite}@keyframes netGlow{0%,100%{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) drop-shadow(0 0 2px rgba(255,255,255,.3));opacity:.7}50%{filter:drop-shadow(0 0 6px rgba(255,255,255,1)) drop-shadow(0 0 12px rgba(255,255,255,.7));opacity:1}}@keyframes rimGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,150,60,.5)) drop-shadow(0 0 4px rgba(255,110,30,.35))}50%{filter:drop-shadow(0 0 8px rgba(255,150,60,1)) drop-shadow(0 0 16px rgba(255,110,30,.75))}}</style><ellipse cx="140.0" cy="158" rx="43" ry="4.0" fill="url(#openGrad)"/><line class="net-line" x1="98.0" y1="159.0" x2="116.9" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round"/><line class="net-line" x1="182.0" y1="159.0" x2="163.1" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round" style="animation-delay:.15s"/><ellipse cx="140.0" cy="159.5" rx="48" ry="5.5" fill="#000" opacity="0.25"/><ellipse cx="140.0" cy="158" rx="46" ry="5.5" class="rim-ring" fill="none" stroke="url(#rimGrad)" stroke-width="4.5"/><ellipse cx="140.0" cy="157.4" rx="45" ry="5.0" fill="none" stroke="#ffb27a" stroke-width="1" opacity="0.55"/></svg>');
   var activeMap={
-    12:'slot0', // dead center (row 3, col 3 in a 5x5 grid, zero-indexed 12)
-    1:'slot1',  // top row, one in from the left
-    3:'slot2',  // top row, one in from the right
-    21:'slot3', // bottom row, one in from the left
-    23:'slot4'  // bottom row, one in from the right
+    17:'slot0', // dead center (row 3, col 4 in a 7x5 grid, zero-indexed 17)
+    1:'slot1',  // top row, one in from the new left edge
+    5:'slot2',  // top row, one in from the new right edge
+    29:'slot3', // bottom row, one in from the new left edge
+    33:'slot4'  // bottom row, one in from the new right edge
   };
-  for(var i=0;i<25;i++){
+  for(var i=0;i<35;i++){
     var el;
     if(activeMap[i]){
       el=document.createElement('button');
@@ -381,13 +348,6 @@ function loadBest(){
 }
 function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
 
-// THE STANDINGS — a shared board combining every headset in the
-// room, not just this one device. Every finished game is inserted as
-// its own row in Supabase; the app itself groups by player name and
-// keeps each player's best score when building the ranked view. A
-// dropped connection never blocks a player from seeing their own
-// result — it just means that one score won't reach the shared board
-// until the network comes back.
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
 var SB_TABLE='ritnome_mobile_handle_standings';
@@ -397,13 +357,9 @@ function recordScoreToStandings(name,finalScore,made,attempts,avgMs,shots){
     method:'POST',
     headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
     body:JSON.stringify({player_name:name,score:finalScore,made:made,attempts:attempts,avg_ms:avgMs,shots:shots||[]})
-  }).catch(function(){}); // offline is fine — this game's own end screen already shows the score either way
+  }).catch(function(){});
 }
 
-// Fetches every game ever recorded, then keeps only each player's own
-// best — the same "best score per player" logic the local-only
-// version always used, just built from shared data now instead of
-// one device's own storage.
 function fetchStandings(){
   var url=SB_URL+'/rest/v1/'+SB_TABLE+'?select=player_name,score,made,attempts,avg_ms,shots&order=score.desc';
   return fetch(url,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
@@ -420,15 +376,6 @@ function fetchStandings(){
     });
 }
 
-// The board is now only cleared from admin.html, behind a real
-// login — never from a button any player could reach on a shared
-// classroom device.
-
-
-// Renders one game's full tap-by-tap history into a container — a
-// real, ordered record of every hit and miss with its own BPM and
-// point value, plus the game's actual final total, so someone can see
-// exactly how that number was built, not just what it added up to.
 function renderTapLog(container,shots,finalScore){
   if(!shots||!shots.length){
     container.innerHTML='<div class="tap-log-empty">No round-by-round detail saved for this game.</div>';
@@ -444,9 +391,6 @@ function renderTapLog(container,shots,finalScore){
 }
 
 function renderStandings(){
-  // The ranked board is shared across every device, so it genuinely
-  // has to wait on a real fetch. Show that honestly rather than
-  // pretending it's instant.
   var listEl=$('standingsList');
   var tapLogEl=$('standingsTapLog');
   tapLogEl.style.display='none';
@@ -484,17 +428,12 @@ function renderStandings(){
       });
     });
   }).catch(function(){
-    // A genuinely dropped connection — the player's own game is
-    // completely unaffected, only the shared board couldn't load.
     listEl.innerHTML='<div class="box-empty">Couldn\'t reach the standings — check the connection. <span id="standingsRetryBtn" style="color:#7c3aed;text-decoration:underline;cursor:pointer">Try again</span></div>';
     var retryBtn=document.getElementById('standingsRetryBtn');
     if(retryBtn)retryBtn.addEventListener('click',function(){renderStandings()});
   });
 }
 
-// Standings can be opened from either the intro screen or the end
-// screen. Track which one, so closing it returns the player to
-// wherever they actually were, not always back to the intro.
 var standingsReturnScreen='screen-intro';
 
 $('openBoxBtn').onclick=function(){
@@ -513,33 +452,12 @@ $('closeBoxBtn').onclick=function(){
   $('screen-box').style.display='none';
   $(standingsReturnScreen).style.display='flex';
 };
-// The end screen's own Back button — stays on this page and returns
-// to the intro screen, the same way Next Player already does. Never
-// navigates back through the gate, since that would force a real
-// player to re-enter their access code just to leave a finished round.
-$('endBackBtn').onclick=function(){
-  $('screen-end').style.display='none';
-  $('screen-intro').style.display='flex';
-};
 
 var fsb=$('fsBtn');
 if(fsb)fsb.onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 var fsg=$('fsBtnGame');
 if(fsg)fsg.onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
-// Fullscreen doesn't survive a page navigation in virtually any
-// browser — a request made on the gate is undone the instant it
-// redirects here. So this page catches its OWN very first genuine
-// tap, whatever that turns out to be (not specifically the Start
-// button), and uses that to request fullscreen immediately, rather
-// than waiting for a specific button further down the flow.
-//
-// Explicitly skipped for taps on a link — switcher buttons and the
-// back link navigate away from this page entirely, and starting a
-// fullscreen transition in the middle of that click is exactly what
-// was causing it to take two or three taps to actually leave: the
-// transition interrupts the browser's own in-flight handling of the
-// click, so the navigation never completes on the first try.
 (function(){
   function grabFullscreenOnFirstTap(e){
     if(e.target.closest('a'))return;
@@ -572,15 +490,6 @@ function startDrill(){
 
 function msg(t,cls){var m=$('msg');m.textContent=t;m.className=cls||''}
 
-// ═══ THE HANDLE — MEMORY SEQUENCE ENGINE ═══
-// Ported unchanged from the proven, already-tested build: a sequence
-// of balls lights up one at a time at a fixed 120 BPM; the player
-// repeats it back on the same 5 fixed positions; each successful
-// round adds one more ball. Score is the triangular sum of every
-// round completed (1+2+3+...), not just the final depth reached.
-// Rebuilt here only to sit on the fixed, never-resizing stage
-// architecture the other four games already proved stable in VR —
-// the game logic itself is untouched.
 function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}
 function createNoiseBuffer(){if(noiseBuffer||!audioCtx)return;var bs=audioCtx.sampleRate*0.1;noiseBuffer=audioCtx.createBuffer(1,bs,audioCtx.sampleRate);var o=noiseBuffer.getChannelData(0);for(var i=0;i<bs;i++)o[i]=Math.random()*2-1}
 function playCongaHit(ci,q){if(!audioCtx)return;createNoiseBuffer();var n=audioCtx.currentTime;var p=congaPitches[ci]||congaPitches[2];var v=q==='perfect'?0.6:q==='good'?0.5:0.35;var d=q==='perfect'?0.35:q==='good'?0.28:0.15;
@@ -615,7 +524,7 @@ function repNextRound(){
   $('hRound').textContent=repRound;
   repSequence.push(Math.floor(Math.random()*drumCount));
   msg('🧠 ROUND '+repRound+' · WATCH...','watch');
-  setTimeout(function(){repPlaySequence(0)},repRound===1?600:900);
+  setTimeout(function(){repPlaySequence(0)},repRound===1?1000:900);
 }
 
 function repPlaySequence(idx){
@@ -679,24 +588,13 @@ function repEndGame(){
   var completed=repRound-1;
   var finalScore=Math.max(0,score);
   $('endNum').textContent=finalScore;
-  $('endBpm').textContent=completed>=5?'GOLDEN MEMORY! 🧠':completed>=3?'GREAT JOB! 🔥':'GOOD TRY! 💪';
-  $('endAcc').textContent='Rounds: '+completed+' · Best: '+best;
   if(completed>=3){playCongaRoll();launchConfetti();}
-  if(finalScore>0&&finalScore===best){
-    $('endHead').textContent='🎉 New Best!';$('endSub').textContent='New high score — '+finalScore+' points, '+completed+' rounds. Nothing but net!';
-  }else{
-    $('endHead').textContent='Round Over!';$('endSub').textContent='Great memory. Next player, beat this number!';
-  }
-  playersThisSession++;
-  $('sessionLine').textContent='Players this session: '+playersThisSession;
   recordScoreToStandings(currentPlayerName,finalScore,completed,repRound,0,repShotLog);
   setTimeout(function(){
     $('screen-end').style.display='flex';
   },500);
 }
 
-// Each ball's own tap handler — the balls are both the display and
-// the input, so a tap only ever means one thing: "I choose this one."
 ['slot0','slot1','slot2','slot3','slot4'].forEach(function(id,i){
   $(id).addEventListener('pointerdown',function(e){
     e.preventDefault();
@@ -708,22 +606,12 @@ function repEndGame(){
 function nextPlayer(){
   $('screen-end').style.display='none';
   $('screen-intro').style.display='flex';
-  $('playerNameInputMain').value=currentPlayerName; // last name typed stays prefilled, since the same player often plays several turns in a row
+  $('playerNameInputMain').value=currentPlayerName;
   setTimeout(function(){$('playerNameInputMain').focus()},50);
 }
 $('nextPlayerBtn').onclick=nextPlayer;
 
 loadBest();
-
-// Opened directly from the hub's own "Standings" link for this game
-// goes straight to the shared board instead of the intro screen.
-// Otherwise, the intro screen (which now carries the name input
-// directly) is already visible by default — nothing else to do.
-if(new URLSearchParams(window.location.search).get('standings')==='1'){
-  renderStandings();
-  $('screen-intro').style.display='none';
-  $('screen-box').style.display='flex';
-}
 </script>
 </body>
 </html>
