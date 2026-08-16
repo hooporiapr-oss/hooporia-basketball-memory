@@ -80,8 +80,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 }
 .choice-btn:active{transform:scale(.94)}
 
-#controls{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:center;gap:10px;padding:8px 16px 10px;background:linear-gradient(0deg,rgba(0,0,0,.9),transparent)}
-.ctrl-btn{height:40px;flex:0 1 170px;max-width:200px;border:2px solid rgba(124,58,237,.5);background:rgba(0,0,0,.4);border-radius:10px;color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
 
 #screen-intro{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#140800 0%,#000 70%);z-index:50;overflow-y:auto;overflow-x:hidden;padding:20px 16px 24px;box-sizing:border-box;text-align:center}
 .vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(255,107,53,1);margin-bottom:8px}
@@ -181,10 +179,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="confettiContainer" style="position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden"></div>
 
 <div class="court" id="court"></div>
-
-<div id="controls">
-  <button class="ctrl-btn" id="fsBtnGame">⛶ Full Screen</button>
-</div>
 
 <!-- INTRO -->
 <div id="screen-intro">
@@ -410,8 +404,6 @@ $('closeBoxBtn').onclick=function(){
 
 var fsb=$('fsBtn');
 if(fsb)fsb.onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
-var fsg=$('fsBtnGame');
-if(fsg)fsg.onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 
 (function(){
   function grabFullscreenOnFirstTap(e){
