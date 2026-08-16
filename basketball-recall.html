@@ -422,7 +422,7 @@ $('seqExitBtn').onclick=function(){window.location.href='mobile-the-handle.html'
 
 (function(){
   function grabFullscreenOnFirstTap(e){
-    if(e.target.closest('a'))return;
+    if(e.target.closest('a,button'))return;
     try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(function(){}); } }catch(err){}
     document.removeEventListener('pointerdown',grabFullscreenOnFirstTap,true);
   }
