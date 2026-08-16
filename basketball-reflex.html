@@ -133,8 +133,6 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 @media (max-width:768px){
   #fsBtn{display:none}
 }
-.rbb-top-fs{position:fixed;top:16px;right:16px;padding:8px 16px;border:2px solid rgba(255,149,0,.4);background:rgba(0,0,0,.5);color:#ff9500;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;cursor:pointer;z-index:120}
-@media(max-width:768px){.rbb-top-fs{display:none}}
 
 #reflex_fsStrobe{position:fixed;inset:0;z-index:110;pointer-events:none;background:#ff9500;opacity:0}
 
@@ -158,7 +156,6 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 <body>
 <div id="reflex_screen-intro">
   <button style="position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;cursor:pointer;z-index:120" id="reflexExitBtn" type="button">← Back</button>
-  <button class="rbb-top-fs" id="reflex_fsBtnTop">⛶ Fullscreen</button>
   <div class="rbb-vrr-logo">BASKETBALL <span>REFLEX</span></div>
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:420px;margin:16px auto 14px">
   <button class="rbb-big-btn" id="reflex_startBtn">👀 ENTER THE GAMEBOARD</button>
@@ -468,7 +465,15 @@ function resizeCourtToFit(){
 window.addEventListener('resize',resizeCourtToFit);
 
 $('reflex_menuBtn').onclick=function(){stopFullStrobe();stopRecallTimer();$('reflex_screen-game').style.display='none';$('reflex_screen-intro').style.display='flex'};
-$('reflex_fsBtnTop').onclick=async function(){try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+
+(function(){
+  function grabFullscreenOnFirstTap(e){
+    if(e.target.closest('a'))return;
+    try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(function(){}); } }catch(err){}
+    document.removeEventListener('pointerdown',grabFullscreenOnFirstTap,true);
+  }
+  document.addEventListener('pointerdown',grabFullscreenOnFirstTap,true);
+})();
 
 var cells=[];
 function buildCourt(){var court=$('reflex_court');court.innerHTML='';cells=[];for(var i=0;i<50;i++){var c=document.createElement('div');c.className='rbb-cell';c.dataset.i=i;c.addEventListener('pointerdown',(function(idx){return function(e){e.preventDefault();handleTap(idx)}})(i));court.appendChild(c);cells.push(c)}}
