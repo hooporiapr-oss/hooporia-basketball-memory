@@ -174,7 +174,7 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="msg" class="watch"></div>
 <div id="confettiContainer" style="position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden"></div>
 
-<div class="court" id="court"></div>
+<div class="court" id="court" style="display:none"></div>
 
 <!-- INTRO -->
 <div id="screen-intro">
@@ -422,7 +422,7 @@ function startDrill(){
   var n=3;$('bigCount').textContent=n;
   var iv=setInterval(function(){
     n--;
-    if(n<=0){clearInterval(iv);$('countdown').style.display='none';repStart()}
+    if(n<=0){clearInterval(iv);$('countdown').style.display='none';$('court').style.display='grid';repStart()}
     else{$('bigCount').textContent=n}
   },800);
 }
@@ -530,6 +530,7 @@ function repEndGame(){
   if(completed>=3){playCongaRoll();launchConfetti();}
   recordScoreToStandings(currentPlayerName,finalScore,completed,repRound,0,repShotLog);
   setTimeout(function(){
+    $('court').style.display='none';
     $('screen-end').style.display='flex';
   },500);
 }
@@ -544,6 +545,7 @@ function repEndGame(){
 
 function nextPlayer(){
   $('screen-end').style.display='none';
+  $('court').style.display='none';
   $('screen-intro').style.display='flex';
   $('playerNameInputMain').value=currentPlayerName;
   setTimeout(function(){$('playerNameInputMain').focus()},50);
