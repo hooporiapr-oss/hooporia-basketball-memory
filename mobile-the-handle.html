@@ -84,7 +84,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 .ctrl-btn{height:40px;flex:0 1 170px;max-width:200px;border:2px solid rgba(124,58,237,.5);background:rgba(0,0,0,.4);border-radius:10px;color:#fff;font-size:.85rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center}
 
 #screen-intro{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#140800 0%,#000 70%);z-index:50;overflow-y:auto;overflow-x:hidden;padding:20px 16px 24px;box-sizing:border-box;text-align:center}
-.intro-content{width:100%;display:flex;flex-direction:column;align-items:center}
 .vrr-logo{font-size:2.4rem;font-weight:900;font-style:italic;letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1;color:#fff;text-shadow:0 0 60px rgba(255,107,53,1);margin-bottom:8px}
 .vrr-logo span{color:#FF6B35}
 .vrr-sub{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:#7c3aed;margin-bottom:28px}
@@ -191,9 +190,8 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="screen-intro">
   <a class="intro-back" href="index.html">← Back</a>
   <button class="intro-fs" id="fsBtn" data-i18n="fullscreen">⛶ Fullscreen</button>
-  <div class="intro-content">
   <div class="vrr-logo">THE <span>HANDLE</span></div>
-  <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:320px;margin:8px auto">
+  <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:420px;margin:16px auto 14px">
   <button class="big-btn" id="bigStart" data-i18n="start" onclick="handleStartClick()">▶ ENTER THE GAMEBOARD</button>
   <button class="box-open-btn" id="openBoxBtn" data-i18n="standingsBtn">🏆 THE STANDINGS</button>
   <div class="game-switcher">
@@ -204,7 +202,6 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
     <a class="switcher-btn game-active" href="basketball-recognition.html">Q4<br>Recognition</a>
   </div>
   <div style="margin-top:24px;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#4a5058">Powered by <a href="https://hooporia.com" target="_blank" rel="noopener" style="color:#8892a0;font-style:italic;text-decoration:underline">Gostar Digital</a></div>
-  </div>
 </div>
 
 <!-- THE STANDINGS -->
