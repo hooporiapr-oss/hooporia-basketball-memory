@@ -241,7 +241,7 @@ $('playerNameInputMain').addEventListener('keydown',function(e){
 });
 
 var score=0,best=0;
-var bpm=60,drumCount=5;
+var bpm=80,drumCount=5;
 var sessionBest=0, playersThisSession=0;
 
 (function buildFiveCellCourt(){
@@ -430,8 +430,23 @@ function startDrill(){
 function msg(t,cls){var m=$('msg');m.textContent=t;m.className=cls||''}
 
 function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}
+
+// Some browsers — VR headset browsers especially, with their own power
+// management — can silently drop the audio context back to 'suspended'
+// mid-session, well after the initial startup resume() call. Since
+// resume() is asynchronous and the game's own tap/flash timing can't
+// pause to await it, a hit landing in that gap plays no sound at all,
+// with nothing in the console to show it happened. This check runs
+// continuously in the background so a suspended context gets caught
+// and resumed within a fraction of a second, rather than staying
+// silent until some later, unrelated event happens to trigger resume().
+setInterval(function(){
+  if(audioCtx && audioCtx.state==='suspended'){
+    audioCtx.resume();
+  }
+},250);
 function createNoiseBuffer(){if(noiseBuffer||!audioCtx)return;var bs=audioCtx.sampleRate*0.1;noiseBuffer=audioCtx.createBuffer(1,bs,audioCtx.sampleRate);var o=noiseBuffer.getChannelData(0);for(var i=0;i<bs;i++)o[i]=Math.random()*2-1}
-function playCongaHit(ci,q){if(!audioCtx)return;createNoiseBuffer();var n=audioCtx.currentTime;var p=congaPitches[ci]||congaPitches[2];var v=q==='perfect'?0.6:q==='good'?0.5:0.35;var d=q==='perfect'?0.35:q==='good'?0.28:0.15;
+function playCongaHit(ci,q){if(!audioCtx)return;if(audioCtx.state==='suspended')audioCtx.resume();createNoiseBuffer();var n=audioCtx.currentTime;var p=congaPitches[ci]||congaPitches[2];var v=q==='perfect'?0.6:q==='good'?0.5:0.35;var d=q==='perfect'?0.35:q==='good'?0.28:0.15;
 var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(p.freq,n);o.frequency.exponentialRampToValueAtTime(p.freqDecay,n+d);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(v,n+0.005);g.gain.exponentialRampToValueAtTime(0.001,n+d);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+d+0.05);
 var o2=audioCtx.createOscillator();var g2=audioCtx.createGain();o2.type='sine';o2.frequency.setValueAtTime(p.freq*2.2,n);o2.frequency.exponentialRampToValueAtTime(p.freqDecay*1.5,n+d*0.5);g2.gain.setValueAtTime(0,n);g2.gain.linearRampToValueAtTime(v*0.25,n+0.003);g2.gain.exponentialRampToValueAtTime(0.001,n+d*0.5);o2.connect(g2);g2.connect(audioCtx.destination);o2.start(n);o2.stop(n+d);
 if(noiseBuffer){var ns=audioCtx.createBufferSource();var ng=audioCtx.createGain();var nf=audioCtx.createBiquadFilter();ns.buffer=noiseBuffer;nf.type='bandpass';nf.frequency.value=p.freq*3;nf.Q.value=1.5;ng.gain.setValueAtTime(0.2,n);ng.gain.exponentialRampToValueAtTime(0.001,n+0.04);ns.connect(nf);nf.connect(ng);ng.connect(audioCtx.destination);ns.start(n);ns.stop(n+0.05)}}
@@ -456,6 +471,7 @@ function repStart(){
 }
 
 function repNextRound(){
+  if(audioCtx && audioCtx.state==='suspended')audioCtx.resume();
   repRound++;
   repPlayerIndex=0;
   repIsListening=false;
