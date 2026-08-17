@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+if (sessionStorage.getItem('hoop-gate-pass') !== '1') {
+  window.location.replace('index.html');
+}
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Hooporia</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* Fixed to the viewport rather than height:100vh — 100vh recalculates
+   whenever a mobile/VR browser's UI chrome shows or hides, and reacting
+   to that recalculation is what causes a page to drift on its own.
+   Fixed positioning removes the dependency entirely. */
+html,body{
+  height:100%;
+  overflow:hidden;
+  background:#000;
+  user-select:none;-webkit-user-select:none;
+  touch-action:manipulation;
+}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
+}
+
+/* True black, not a dark gradient — this page is meant to disappear
+   into the VR void environment rather than sit as a visible panel
+   floating inside it. */
+#stage{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:#000;
+}
+
+#panel{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:820px;
+  max-height:100%;
+  overflow-y:auto;
+  text-align:center;
+}
+h1{
+  font-size:clamp(1.6rem,4vw,2.3rem);
+  letter-spacing:.02em;
+  margin-bottom:2px;
+}
+h1 span{color:#f37418}
+.readyBanner{
+  display:block;
+  width:100%;
+  max-width:820px;
+  height:auto;
+  border-radius:14px;
+  margin:14px 0 18px;
+  box-shadow:0 0 40px rgba(243,116,24,.25);
+}
+
+.subtitle{
+  font-size:1.25rem;
+  font-weight:700;
+  color:#c9b8a8;
+  margin-bottom:24px;
+  letter-spacing:.03em;
+}
+
+.gameLink{
+  display:block;
+  padding:16px 18px;
+  border-radius:14px;
+  border:1px solid rgba(255,126,32,.35);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  font-size:1.02rem;
+  letter-spacing:.02em;
+  text-align:left;
+  transition:background .15s,border-color .15s,transform .1s;
+}
+.gameLink:hover{
+  background:rgba(255,126,32,.12);
+  border-color:rgba(255,126,32,.7);
+}
+.gameLink:active{transform:scale(.98)}
+.gameLink .tag{
+  display:block;
+  font-size:.72rem;
+  font-weight:400;
+  color:#c9b8a8;
+  margin-top:3px;
+  letter-spacing:.01em;
+}
+
+/* Swish Memory sits on its own, centered, ahead of the grid below. */
+.featuredRow{
+  display:flex;
+  justify-content:center;
+  margin-bottom:14px;
+}
+.gameLink.featured{
+  width:100%;
+  max-width:420px;
+  text-align:center;
+  background:linear-gradient(135deg,rgba(243,116,24,.16),rgba(255,255,255,.04));
+  border-color:rgba(255,155,80,.55);
+}
+.gameLink.featured .tag{text-align:center}
+
+.gameGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+footer{
+  margin-top:24px;
+  font-size:.72rem;
+  color:#6b5d52;
+  letter-spacing:.02em;
+}
+
+@media (max-width:520px){
+  .gameGrid{grid-template-columns:1fr}
+}
+
+#soundToggle{
+  position:fixed;top:14px;right:14px;z-index:30;width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.45);color:#fff;font-size:1rem;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+}
+</style>
+</head>
+<body>
+<button id="soundToggle" aria-label="Toggle sound" title="Toggle beat sound">🔊</button>
+
+<div id="stage">
+  <div id="panel">
+    <h1>Basketball <span>Hooporia</span></h1>
+    <img class="readyBanner" src="ready.png" alt="Are you ready? The game awaits — rise to the challenge">
+
+    <div id="cardsContainer">
+    <div class="subtitle">Choose a training mode</div>
+
+    <div class="featuredRow">
+      <a class="gameLink featured" href="basketball-flash-sphere.html">
+        Basketball Flash Reaction
+        <span class="tag">A basketball flashes once, then vanishes — read it, remember it, and swish as many threes as you can in 60 seconds</span>
+      </a>
+    </div>
+
+    <div class="gameGrid" style="margin-top:14px">
+      <a class="gameLink" href="basketball-recall.html">
+        Basketball Recall
+        <span class="tag">Watch a sequence, then tap it back in order</span>
+      </a>
+      <a class="gameLink" href="basketball-reflex.html">
+        Basketball Reflex
+        <span class="tag">Find and tap every spot that flashed — order doesn't matter</span>
+      </a>
+      <a class="gameLink" href="basketball-flash.html">
+        Flash
+        <span class="tag">One quick look, then shoot from memory</span>
+      </a>
+    </div>
+
+    <div class="featuredRow" style="margin-top:14px;margin-bottom:0">
+      <a class="gameLink featured" href="shoot-training-loop.html">
+        Swish Memory
+        <span class="tag">Watch the swish, on repeat — until your shot just finishes what you see</span>
+      </a>
+    </div>
+    </div>
+
+    <footer>Gostar Digital LLC</footer>
+  </div>
+</div>
+<script>
+(function(){
+var soundBtn=document.getElementById('soundToggle');
+var muted=false;
+
+soundBtn.addEventListener('click',function(e){
+  e.stopPropagation();
+  muted=!muted;
+  soundBtn.textContent=muted?'🔇':'🔊';
+  soundBtn.style.opacity=muted?'.55':'1';
+});
+})();
+</script>
+</body>
+</html>
