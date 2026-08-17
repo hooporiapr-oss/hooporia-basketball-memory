@@ -120,7 +120,7 @@ body{
   color:#7d7268;margin-bottom:12px;
 }
 .quarter-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  display:grid;grid-template-columns:1fr;gap:10px;
   max-width:440px;margin:0 auto 22px;
 }
 .quarter-card{
@@ -181,7 +181,7 @@ footer{
     <a class="back-btn" href="hooporia-lab.html">← Back</a>
 
     <div class="arena-title">MEMORY <span>BASKETBALL</span></div>
-    <div class="arena-sub">4 Quarters of Memory Action</div>
+    <div class="arena-sub">Memory-Based Basketball Challenges</div>
 
     <div class="quarters-label">Practice A Single Quarter</div>
     <div class="quarter-grid">
@@ -195,19 +195,14 @@ footer{
         <div class="quarter-name">Reflex</div>
         <div class="quarter-desc">React fast — the shot clock isn't waiting.</div>
       </a>
-      <a class="quarter-card" href="basketball-replay.html">
+      <a class="quarter-card" href="basketball-flash.html">
         <div class="quarter-num">Q3</div>
-        <div class="quarter-name">Replay</div>
-        <div class="quarter-desc">Watch the play unfold, then run it yourself.</div>
-      </a>
-      <a class="quarter-card" href="basketball-recognition.html">
-        <div class="quarter-num">Q4</div>
-        <div class="quarter-name">Recognition</div>
-        <div class="quarter-desc">Spot the pattern before the buzzer sounds.</div>
+        <div class="quarter-name">Flash</div>
+        <div class="quarter-desc">One quick look, then shoot from memory.</div>
       </a>
     </div>
 
-    <button class="fullgame-btn" id="fullGameBtn">🏀 PLAY THE FULL GAME — ALL 4 QUARTERS</button>
+    <button class="fullgame-btn" id="fullGameBtn">🏀 PLAY THE FULL GAME</button>
 
     <footer>Gostar Digital LLC</footer>
   </div>
@@ -260,7 +255,7 @@ document.getElementById('nameContinueBtn').addEventListener('click',function(){
   }
   sessionStorage.setItem('hoop-player-name',name.slice(0,20));
   sessionStorage.setItem('hoop-fullgame-active','1');
-  sessionStorage.setItem('hoop-quarter-scores',JSON.stringify({q1:0,q2:0,q3:0,q4:0}));
+  sessionStorage.setItem('hoop-quarter-scores',JSON.stringify({q1:0,q2:0,q3:0}));
   window.location.href='basketball-recall.html';
 });
 document.getElementById('playerNameInput').addEventListener('keydown',function(e){
