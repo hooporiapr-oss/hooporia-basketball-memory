@@ -64,7 +64,7 @@ body{
 }
 .final-title span{color:#FF6B35}
 
-.qs-board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;margin-bottom:24px}
+.qs-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-bottom:24px}
 .qs-cell{border-radius:14px;border:2px solid rgba(255,107,53,.35);background:rgba(255,107,53,.06);padding:18px 6px}
 .qs-label{font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#ffd35a;margin-bottom:6px}
 .qs-val{font-size:1.7rem;font-weight:900;color:#fff}
@@ -102,47 +102,9 @@ body{
 .action-btn.secondary{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.25)}
 
 footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
-
-.overtime-card{
-  margin-top:18px;padding:16px 18px;border-radius:14px;
-  border:1px solid rgba(255,155,80,.4);
-  background:linear-gradient(135deg,rgba(243,116,24,.12),rgba(255,255,255,.03));
-  text-align:center;
-}
-.overtime-card a{text-decoration:none;display:block}
-.overtime-label{display:block;font-size:.6rem;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#00e5ff;margin-bottom:4px}
-.overtime-name{display:block;font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:4px}
-.overtime-tag{display:block;font-size:.78rem;color:#c9b8a8}
-
-.exit-btn{position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none;z-index:60}
-
-.box-open-btn{width:100%;height:52px;border:2px solid rgba(0,229,255,.5);background:rgba(0,229,255,.1);border-radius:14px;color:#00e5ff;font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-bottom:14px}
-
-#screen-standings{
-  position:fixed;inset:0;z-index:58;display:none;flex-direction:column;align-items:center;
-  background:radial-gradient(ellipse at center,#140800 0%,#000 70%);padding:70px 16px 24px;overflow-y:auto;
-}
-.box-title{font-size:1.7rem;font-weight:900;font-style:italic;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-shadow:0 0 40px rgba(255,107,53,.8);margin-bottom:2px}
-.box-title span{color:#00e5ff}
-.box-sub{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;color:#7c3aed;margin-bottom:22px}
-.box-section{width:100%;max-width:440px;margin-bottom:24px}
-.box-section-label{font-size:.65rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#ffd35a;margin-bottom:8px;text-align:left;padding-left:4px}
-.box-table{width:100%;border-collapse:collapse;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.3);border-radius:12px;overflow:hidden}
-.box-empty{color:#7fa8c0;font-size:.85rem;padding:24px 8px;font-style:italic;text-align:center}
-.box-back-btn{width:100%;max-width:440px;height:56px;border:none;border-radius:16px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:1rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 30px rgba(124,58,237,.6);margin-bottom:20px}
-
-.standings-row{font-size:.85rem;color:#9fb3c8;padding:12px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
-.standings-row:last-child{border-bottom:none}
-.standings-rank{font-weight:900;font-size:1.1rem;color:#7c3aed;min-width:28px}
-.standings-row.rank-1 .standings-rank{color:#ffd35a}
-.standings-row.rank-2 .standings-rank{color:#c4b5fd}
-.standings-row.rank-3 .standings-rank{color:#fb923c}
-.standings-name{flex:1;color:#fff;font-weight:700;text-align:left}
-.standings-pts{color:#00e5ff;font-weight:900;font-size:1.1rem}
 </style>
 </head>
 <body>
-<a class="exit-btn" href="shoot-training-loop.html">← Exit</a>
 <div id="stage">
   <div id="panel">
     <div class="buzzer">🔔 Final Buzzer</div>
@@ -152,7 +114,6 @@ footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
       <div class="qs-cell"><div class="qs-label">1st</div><div class="qs-val" id="fsQ1">0</div></div>
       <div class="qs-cell"><div class="qs-label">2nd</div><div class="qs-val" id="fsQ2">0</div></div>
       <div class="qs-cell"><div class="qs-label">3rd</div><div class="qs-val" id="fsQ3">0</div></div>
-      <div class="qs-cell"><div class="qs-label">4th</div><div class="qs-val" id="fsQ4">0</div></div>
     </div>
 
     <div class="total-row">
@@ -160,136 +121,30 @@ footer{margin-top:16px;font-size:.68rem;color:#6b5d52;letter-spacing:.02em}
       <div class="total-val" id="fsTotal">0</div>
     </div>
 
-    <button class="box-open-btn" id="openStandingsBtn">🏆 THE STANDINGS</button>
+    <button class="action-btn primary" id="playAgainBtn">🏀 PLAY AGAIN</button>
+    <a class="action-btn secondary" href="hooporia-lab-02.html">← Back to the Arena</a>
 
     <footer>Gostar Digital LLC</footer>
-  </div>
-</div>
-
-<div id="screen-standings">
-  <button class="box-back-btn" id="closeStandingsBtn">← Back</button>
-  <div class="box-title">THE <span>STANDINGS</span></div>
-  <div class="box-sub">Memory Basketball · Player vs. Player</div>
-
-  <div class="box-section">
-    <div class="box-section-label">Best Final Score Per Player</div>
-    <div class="box-table" id="standingsList" style="border-radius:12px"></div>
   </div>
 </div>
 <script>
 (function(){
 function loadQuarterScores(){
-  try{return JSON.parse(sessionStorage.getItem('hoop-quarter-scores')||'{"q1":0,"q2":0,"q3":0,"q4":0}')}
-  catch(e){return {q1:0,q2:0,q3:0,q4:0}}
+  try{return JSON.parse(sessionStorage.getItem('hoop-quarter-scores')||'{"q1":0,"q2":0,"q3":0}')}
+  catch(e){return {q1:0,q2:0,q3:0}}
 }
 var scores=loadQuarterScores();
-var total=scores.q1+scores.q2+scores.q3+scores.q4;
+var total=scores.q1+scores.q2+scores.q3;
 document.getElementById('fsQ1').textContent=scores.q1;
 document.getElementById('fsQ2').textContent=scores.q2;
 document.getElementById('fsQ3').textContent=scores.q3;
-document.getElementById('fsQ4').textContent=scores.q4;
 document.getElementById('fsTotal').textContent=total;
 
-// THE STANDINGS — a shared board combining every player's completed
-// four-quarter run. Only the FINAL combined score gets submitted,
-// since this page only ever appears after a genuinely finished game
-// — there's no way to reach this screen with a partial run.
-var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
-var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
-var SB_TABLE='memory_basketball_standings';
-
-var playerName=sessionStorage.getItem('hoop-player-name')||'';
-if(playerName){
-  fetch(SB_URL+'/rest/v1/'+SB_TABLE,{
-    method:'POST',
-    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
-    body:JSON.stringify({player_name:playerName,score:total,q1:scores.q1,q2:scores.q2,q3:scores.q3,q4:scores.q4})
-  }).catch(function(){}); // offline is fine — this player's own final score already shows on screen either way
-}
-
-function fetchStandings(){
-  var url=SB_URL+'/rest/v1/'+SB_TABLE+'?select=player_name,score&order=score.desc';
-  return fetch(url,{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
-    .then(function(r){if(!r.ok)throw new Error('bad response');return r.json()})
-    .then(function(rows){
-      var best={};
-      (rows||[]).forEach(function(r){
-        var existing=best[r.player_name];
-        if(!existing||r.score>existing.pts){
-          best[r.player_name]={name:r.player_name,pts:r.score};
-        }
-      });
-      return Object.keys(best).map(function(n){return best[n]}).sort(function(a,b){return b.pts-a.pts});
-    });
-}
-
-function renderStandings(){
-  var listEl=document.getElementById('standingsList');
-  listEl.innerHTML='<div class="box-empty">Loading standings…</div>';
-  fetchStandings().then(function(ranked){
-    if(!ranked.length){
-      listEl.innerHTML='<div class="box-empty">No players yet — be the first name on the board.</div>';
-      return;
-    }
-    listEl.innerHTML=ranked.map(function(p,i){
-      var rankClass=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
-      var safeName=p.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-      return '<div class="standings-row '+rankClass+'">'
-        +'<span class="standings-rank">'+(i+1)+'</span>'
-        +'<span class="standings-name">'+safeName+'</span>'
-        +'<span class="standings-pts">'+p.pts+'</span>'
-        +'</div>';
-    }).join('');
-  }).catch(function(){
-    listEl.innerHTML='<div class="box-empty">Couldn\'t reach the standings — check the connection. <span id="standingsRetryBtn" style="color:#7c3aed;text-decoration:underline;cursor:pointer">Try again</span></div>';
-    var retryBtn=document.getElementById('standingsRetryBtn');
-    if(retryBtn)retryBtn.addEventListener('click',renderStandings);
-  });
-}
-
-document.getElementById('openStandingsBtn').addEventListener('click',function(){
-  renderStandings();
-  document.getElementById('stage').style.display='none';
-  document.getElementById('screen-standings').style.display='flex';
+document.getElementById('playAgainBtn').addEventListener('click',function(){
+  sessionStorage.setItem('hoop-fullgame-active','1');
+  sessionStorage.setItem('hoop-quarter-scores',JSON.stringify({q1:0,q2:0,q3:0}));
+  window.location.href='basketball-recall.html';
 });
-document.getElementById('closeStandingsBtn').addEventListener('click',function(){
-  document.getElementById('screen-standings').style.display='none';
-  document.getElementById('stage').style.display='flex';
-});
-
-// The final buzzer — a real, harsh sustained horn tone, same sound
-// used at the end of a 60-second contest elsewhere on the platform.
-// Sounds the instant this page appears, since that's the true "game
-// over" moment — the buzzer belongs to the scoreboard arriving, not
-// to a transition that gets cut off by the page navigation itself.
-var beatAudioCtx=null;
-function getBeatAC(){if(!beatAudioCtx){try{beatAudioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}return beatAudioCtx}
-function playBuzzer(){
-  var c=getBeatAC();if(!c)return;
-  try{
-    if(c.state==='suspended')c.resume();
-    var o=c.createOscillator(),g=c.createGain();
-    o.type='sawtooth';
-    o.frequency.setValueAtTime(220,c.currentTime);
-    g.gain.setValueAtTime(0.001,c.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.55,c.currentTime+0.05);
-    g.gain.setValueAtTime(0.55,c.currentTime+1.1);
-    g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1.4);
-    o.connect(g);g.connect(c.destination);
-    o.start();o.stop(c.currentTime+1.45);
-
-    var o2=c.createOscillator(),g2=c.createGain();
-    o2.type='square';
-    o2.frequency.setValueAtTime(221,c.currentTime);
-    g2.gain.setValueAtTime(0.001,c.currentTime);
-    g2.gain.exponentialRampToValueAtTime(0.28,c.currentTime+0.05);
-    g2.gain.setValueAtTime(0.28,c.currentTime+1.1);
-    g2.gain.exponentialRampToValueAtTime(0.001,c.currentTime+1.4);
-    o2.connect(g2);g2.connect(c.destination);
-    o2.start();o2.stop(c.currentTime+1.45);
-  }catch(e){}
-}
-playBuzzer();
 })();
 </script>
 </body>
