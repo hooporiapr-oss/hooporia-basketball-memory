@@ -165,7 +165,7 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
   <div id="flash"></div>
 </div>
 
-<div id="hud">
+<div id="hud" style="display:none">
   <div class="hud-box"><div class="hud-label">Score</div><div class="hud-val" id="hScore">0</div></div>
   <div class="hud-box"><div class="hud-label">Round</div><div class="hud-val" id="hRound">--</div></div>
   <div class="hud-box"><div class="hud-label">Best</div><div class="hud-val" id="hBest">0</div></div>
@@ -422,7 +422,7 @@ function startDrill(){
   var n=3;$('bigCount').textContent=n;
   var iv=setInterval(function(){
     n--;
-    if(n<=0){clearInterval(iv);$('countdown').style.display='none';$('court').style.display='grid';repStart()}
+    if(n<=0){clearInterval(iv);$('countdown').style.display='none';$('court').style.display='grid';$('hud').style.display='flex';repStart()}
     else{$('bigCount').textContent=n}
   },800);
 }
@@ -531,6 +531,7 @@ function repEndGame(){
   recordScoreToStandings(currentPlayerName,finalScore,completed,repRound,0,repShotLog);
   setTimeout(function(){
     $('court').style.display='none';
+    $('hud').style.display='none';
     $('screen-end').style.display='flex';
   },500);
 }
@@ -546,6 +547,7 @@ function repEndGame(){
 function nextPlayer(){
   $('screen-end').style.display='none';
   $('court').style.display='none';
+  $('hud').style.display='none';
   $('screen-intro').style.display='flex';
   $('playerNameInputMain').value=currentPlayerName;
   setTimeout(function(){$('playerNameInputMain').focus()},50);
