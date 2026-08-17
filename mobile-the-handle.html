@@ -416,6 +416,7 @@ $('closeBoxBtn').onclick=function(){
 function startDrill(){
   if(repIsPlaying||repIsListening)return;
   try{ if(!document.fullscreenElement && document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(function(){}); } }catch(e){}
+  initAudio();
   $('screen-intro').style.display='none';
   $('countdown').style.display='flex';
   var n=3;$('bigCount').textContent=n;
