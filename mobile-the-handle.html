@@ -465,8 +465,9 @@ function repNextRound(){
   setTimeout(function(){repPlaySequence(0)},repRound===1?1000:900);
 }
 
-function repPlaySequence(idx){
+function repPlaySequence(idx,startTime){
   if(!repIsPlaying)return;
+  if(idx===0)startTime=performance.now();
   if(idx>=repSequence.length){
     repIsPlaying=false;
     repIsListening=true;
@@ -484,8 +485,18 @@ function repPlaySequence(idx){
   var speed=60000/bpm;
   setTimeout(function(){
     el.classList.remove('lit');
-    setTimeout(function(){repPlaySequence(idx+1)},speed*0.2);
   },speed*0.6);
+  // Each beat is scheduled against the fixed, original start time rather
+  // than chained relative to the previous setTimeout. Chained timeouts
+  // each carry their own small, unpredictable delay (rendering work, GC,
+  // other animations competing for the main thread), and those delays
+  // compound across a long sequence, so the flashing and its beat
+  // gradually drift out of a steady rhythm. Scheduling against one fixed
+  // clock instead means any single beat's delay doesn't carry forward —
+  // the next beat still lands on schedule.
+  var nextTargetTime=startTime+(idx+1)*speed*0.8;
+  var delay=Math.max(0,nextTargetTime-performance.now());
+  setTimeout(function(){repPlaySequence(idx+1,startTime)},delay);
 }
 
 function repHandleTap(ci){
