@@ -155,20 +155,44 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
 
 
 
+#quarterStatsScreen{
+  display:none;position:fixed;inset:0;z-index:300;
+  background:radial-gradient(ellipse at center,#140800 0%,#000 70%);
+  flex-direction:column;align-items:center;justify-content:center;padding:24px;
+}
+.qs-title{font-size:1.7rem;font-weight:900;font-style:italic;letter-spacing:.03em;text-transform:uppercase;text-shadow:0 0 30px rgba(255,107,53,.6);margin-bottom:24px;text-align:center;color:#fff}
+.qs-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:480px;margin-bottom:20px}
+.qs-cell{border-radius:12px;border:2px solid rgba(255,107,53,.35);background:rgba(255,107,53,.06);padding:14px 6px;text-align:center}
+.qs-cell.qs-current{border-color:#FF6B35;background:rgba(255,107,53,.18);box-shadow:0 0 24px rgba(255,107,53,.5)}
+.qs-label{font-size:.6rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#ffb38a;margin-bottom:4px}
+.qs-val{font-size:1.5rem;font-weight:900;color:#fff}
+.qs-total{font-size:1.1rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#ffb38a;margin-bottom:26px}
+.qs-total span{font-size:1.6rem;color:#fff;margin-left:8px}
+.qs-next-btn{width:100%;max-width:420px;height:64px;border:none;border-radius:20px;background:linear-gradient(135deg,#FF6B35,#ff8a5c);color:#fff;font-size:1.05rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;box-shadow:0 0 40px rgba(255,107,53,.7)}
+.qs-next-btn:active{transform:scale(.98)}
 </style>
 </head>
 <body>
+<div id="quarterStatsScreen">
+  <div class="qs-title" id="qsTitle">1ST QUARTER COMPLETE!</div>
+  <div class="qs-board">
+    <div class="qs-cell" id="qsCell1"><div class="qs-label">1st</div><div class="qs-val" id="qsQ1">0</div></div>
+    <div class="qs-cell" id="qsCell2"><div class="qs-label">2nd</div><div class="qs-val" id="qsQ2">0</div></div>
+    <div class="qs-cell" id="qsCell3"><div class="qs-label">3rd</div><div class="qs-val" id="qsQ3">0</div></div>
+  </div>
+  <div class="qs-total">Total: <span id="qsTotal">0</span></div>
+  <button class="qs-next-btn" id="qsNextBtn">NEXT: 2ND QUARTER →</button>
+</div>
 <div id="screen-intro">
   <button style="position:fixed;top:16px;left:16px;padding:8px 16px;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);color:#fff;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;cursor:pointer;z-index:120" id="seqExitBtn" type="button">← Back</button>
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:420px;margin:16px auto 14px">
   <button class="big-btn" id="seqStartBtn">▶ BASKETBALL RECALL</button>
   <button class="box-open-btn" id="openBoxBtn">🏆 THE STANDINGS</button>
   <div class="game-switcher">
-    <a class="switcher-btn game-active" href="mobile-the-handle.html">The<br>Handle</a>
-    <span class="switcher-btn game-current">Q1<br>Recall</span>
-    <a class="switcher-btn game-active" href="basketball-reflex.html">Q2<br>Reflex</a>
-    <a class="switcher-btn game-active" href="basketball-replay.html">Q3<br>Replay</a>
-    <a class="switcher-btn game-active" href="basketball-recognition.html">Q4<br>Recognition</a>
+    <a class="switcher-btn game-active" href="mobile-the-handle.html">The Handle</a>
+    <span class="switcher-btn game-current">Recall</span>
+    <a class="switcher-btn game-active" href="basketball-reflex.html">Reflex</a>
+    <a class="switcher-btn game-active" href="basketball-flash.html">Flash</a>
   </div>
   <div style="margin-top:24px;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#4a5058">Powered by <a href="https://hooporia.com" target="_blank" rel="noopener" style="color:#8892a0;font-style:italic;text-decoration:underline">Gostar Digital</a></div>
 </div>
@@ -629,6 +653,42 @@ function endGame(wrongIdx){
 
 function autoNextRound(){if(phase!=='idle')return;resetCells();$('clockFill').style.width='0%';$('hPf').textContent='--';$('actBtn').disabled=true;$('restartBtn').style.display='none';startRound()}
 
+var THIS_QUARTER=1;
+var QUARTER_SEQUENCE=[
+  {n:1,label:'1st',file:'basketball-recall.html'},
+  {n:2,label:'2nd',file:'basketball-reflex.html'},
+  {n:3,label:'3rd',file:'basketball-flash.html'}
+];
+function isFullGameActive(){return sessionStorage.getItem('hoop-fullgame-active')==='1'}
+function loadQuarterScores(){
+  try{return JSON.parse(sessionStorage.getItem('hoop-quarter-scores')||'{"q1":0,"q2":0,"q3":0}')}
+  catch(e){return {q1:0,q2:0,q3:0}}
+}
+function showQuarterStats(finalScore){
+  var scores=loadQuarterScores();
+  scores['q'+THIS_QUARTER]=finalScore;
+  sessionStorage.setItem('hoop-quarter-scores',JSON.stringify(scores));
+  var total=scores.q1+scores.q2+scores.q3;
+
+  document.getElementById('qsTitle').textContent=QUARTER_SEQUENCE[THIS_QUARTER-1].label.toUpperCase()+' QUARTER COMPLETE!';
+  document.getElementById('qsQ1').textContent=scores.q1;
+  document.getElementById('qsQ2').textContent=scores.q2;
+  document.getElementById('qsQ3').textContent=scores.q3;
+  document.getElementById('qsTotal').textContent=total;
+  for(var i=1;i<=3;i++)document.getElementById('qsCell'+i).classList.toggle('qs-current',i===THIS_QUARTER);
+
+  var nextBtn=document.getElementById('qsNextBtn');
+  if(THIS_QUARTER<3){
+    var nextQ=QUARTER_SEQUENCE[THIS_QUARTER];
+    nextBtn.textContent='NEXT: '+nextQ.label.toUpperCase()+' QUARTER →';
+    nextBtn.onclick=function(){window.location.href=nextQ.file};
+  }else{
+    nextBtn.textContent='SEE FINAL SCORE →';
+    nextBtn.onclick=function(){window.location.href='hooporia-final-score.html'};
+  }
+  document.getElementById('quarterStatsScreen').style.display='flex';
+}
+
 function showFinalScore(){
   phase='idle';clrT();resetCells();updateHUD();$('clockFill').style.width='0%';$('hPf').textContent='--';
   $('repeatBtn').classList.remove('show');
@@ -639,6 +699,7 @@ function showFinalScore(){
   }
   $('actBtn').textContent="PLAY AGAIN";$('actBtn').onclick=restartGame;$('actBtn').disabled=false;
   $('restartBtn').style.display='none';
+  if(isFullGameActive())showQuarterStats(g.sc);
   var made=roundShotLog.filter(function(s){return s.hit}).length;
   recordScoreToStandings(currentPlayerName,g.sc,made,roundShotLog.length,roundShotLog);
 }
@@ -649,6 +710,7 @@ function showTrainingComplete(){
   msg('🏆 '+TRAINING_ROUNDS+'/'+TRAINING_ROUNDS+' — LEVEL '+trainingLevel+' COMPLETE! · SCORE '+g.sc,'perfect');
   $('actBtn').textContent="PLAY AGAIN";$('actBtn').onclick=restartGame;$('actBtn').disabled=false;
   $('restartBtn').style.display='none';
+  if(isFullGameActive())showQuarterStats(g.sc);
   var made=roundShotLog.filter(function(s){return s.hit}).length;
   recordScoreToStandings(currentPlayerName,g.sc,made,roundShotLog.length,roundShotLog);
 }
