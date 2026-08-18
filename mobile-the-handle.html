@@ -254,7 +254,7 @@ var sessionBest=0, playersThisSession=0;
   // just the image, but the grid's own layout/sizing too, leaving a
   // blank screen while the game logic underneath keeps running
   // normally. Real inline SVG in the DOM doesn't carry that risk.
-  court.insertAdjacentHTML('afterbegin', '<svg class="court-rim-net" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rimGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a4d"/><stop offset="50%" stop-color="#e8460f"/><stop offset="100%" stop-color="#961f02"/></linearGradient><radialGradient id="openGrad" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#3a2a1c"/><stop offset="100%" stop-color="#150d08"/></radialGradient></defs><style>.net-line{animation:netGlow 2.2s ease-in-out infinite}.rim-ring{animation:rimGlow 2.2s ease-in-out infinite}@keyframes netGlow{0%,100%{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) drop-shadow(0 0 2px rgba(255,255,255,.3));opacity:.7}50%{filter:drop-shadow(0 0 6px rgba(255,255,255,1)) drop-shadow(0 0 12px rgba(255,255,255,.7));opacity:1}}@keyframes rimGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,150,60,.5)) drop-shadow(0 0 4px rgba(255,110,30,.35))}50%{filter:drop-shadow(0 0 8px rgba(255,150,60,1)) drop-shadow(0 0 16px rgba(255,110,30,.75))}}</style><ellipse cx="140.0" cy="158" rx="43" ry="4.0" fill="url(#openGrad)"/><line class="net-line" x1="98.0" y1="159.0" x2="116.9" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round"/><line class="net-line" x1="182.0" y1="159.0" x2="163.1" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round" style="animation-delay:.15s"/><ellipse cx="140.0" cy="159.5" rx="48" ry="5.5" fill="#000" opacity="0.25"/><ellipse cx="140.0" cy="158" rx="46" ry="5.5" class="rim-ring" fill="none" stroke="url(#rimGrad)" stroke-width="4.5"/><ellipse cx="140.0" cy="157.4" rx="45" ry="5.0" fill="none" stroke="#ffb27a" stroke-width="1" opacity="0.55"/></svg>');
+  court.insertAdjacentHTML('afterbegin', '<svg class="court-rim-net" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rimGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a4d"/><stop offset="50%" stop-color="#e8460f"/><stop offset="100%" stop-color="#961f02"/></linearGradient><radialGradient id="openGrad" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#3a2a1c"/><stop offset="100%" stop-color="#150d08"/></radialGradient><radialGradient id="swishBallGrad" cx="35%" cy="32%" r="65%"><stop offset="0%" stop-color="#ffe3c2"/><stop offset="45%" stop-color="#ff8c00"/><stop offset="100%" stop-color="#a84800"/></radialGradient></defs><style>.net-line{animation:netGlow 2.2s ease-in-out infinite}.rim-ring{animation:rimGlow 2.2s ease-in-out infinite}@keyframes netGlow{0%,100%{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) drop-shadow(0 0 2px rgba(255,255,255,.3));opacity:.7}50%{filter:drop-shadow(0 0 6px rgba(255,255,255,1)) drop-shadow(0 0 12px rgba(255,255,255,.7));opacity:1}}@keyframes rimGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,150,60,.5)) drop-shadow(0 0 4px rgba(255,110,30,.35))}50%{filter:drop-shadow(0 0 8px rgba(255,150,60,1)) drop-shadow(0 0 16px rgba(255,110,30,.75))}}@keyframes swishBallDrop{0%{opacity:0;transform:translateY(0)}12%{opacity:1}78%{opacity:1}100%{opacity:0;transform:translateY(62px)}}.swish-ball{opacity:0}.swish-ball.dropping{animation:swishBallDrop .5s ease-in forwards}@keyframes swishFlash{0%,100%{filter:drop-shadow(0 0 2px rgba(255,255,255,.6))}45%{filter:drop-shadow(0 0 22px rgba(255,255,255,1)) drop-shadow(0 0 44px rgba(255,200,120,1))}}.net-line.swish-flash,.rim-ring.swish-flash{animation:swishFlash .45s ease-out}</style><ellipse cx="140.0" cy="158" rx="43" ry="4.0" fill="url(#openGrad)"/><line class="net-line" x1="98.0" y1="159.0" x2="116.9" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round"/><line class="net-line" x1="182.0" y1="159.0" x2="163.1" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round" style="animation-delay:.15s"/><ellipse cx="140.0" cy="159.5" rx="48" ry="5.5" fill="#000" opacity="0.25"/><ellipse cx="140.0" cy="158" rx="46" ry="5.5" class="rim-ring" fill="none" stroke="url(#rimGrad)" stroke-width="4.5"/><ellipse cx="140.0" cy="157.4" rx="45" ry="5.0" fill="none" stroke="#ffb27a" stroke-width="1" opacity="0.55"/><circle id="swishBall" class="swish-ball" cx="140" cy="132" r="7.5" fill="url(#swishBallGrad)"/></svg>');
   var activeMap={
     17:'slot0', // dead center (row 3, col 4 in a 7x5 grid, zero-indexed 17)
     1:'slot1',  // top row, one in from the new left edge
@@ -452,6 +452,49 @@ var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.fr
 var o2=audioCtx.createOscillator();var g2=audioCtx.createGain();o2.type='sine';o2.frequency.setValueAtTime(p.freq*2.2,n);o2.frequency.exponentialRampToValueAtTime(p.freqDecay*1.5,n+d*0.5);g2.gain.setValueAtTime(0,n);g2.gain.linearRampToValueAtTime(v*0.25,n+0.003);g2.gain.exponentialRampToValueAtTime(0.001,n+d*0.5);o2.connect(g2);g2.connect(audioCtx.destination);o2.start(n);o2.stop(n+d);
 if(noiseBuffer){var ns=audioCtx.createBufferSource();var ng=audioCtx.createGain();var nf=audioCtx.createBiquadFilter();ns.buffer=noiseBuffer;nf.type='bandpass';nf.frequency.value=p.freq*3;nf.Q.value=1.5;ng.gain.setValueAtTime(0.2,n);ng.gain.exponentialRampToValueAtTime(0.001,n+0.04);ns.connect(nf);nf.connect(ng);ng.connect(audioCtx.destination);ns.start(n);ns.stop(n+0.05)}}
 function playWrongSound(){if(!audioCtx)return;var n=audioCtx.currentTime;var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(80,n);o.frequency.exponentialRampToValueAtTime(40,n+0.08);g.gain.setValueAtTime(0.25,n);g.gain.exponentialRampToValueAtTime(0.001,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.12)}
+// The Swish's own finishing sound — distinct from every regular tap
+// hit. A filtered noise sweep falling from high to low, like the
+// ball brushing through the net on its way down, with a soft rising
+// chime underneath landing just after for the reward/payoff feel.
+function playSwishSound(){
+  if(!audioCtx)return;
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  createNoiseBuffer();
+  var n=audioCtx.currentTime;
+  if(noiseBuffer){
+    var ns=audioCtx.createBufferSource();var ng=audioCtx.createGain();var nf=audioCtx.createBiquadFilter();
+    ns.buffer=noiseBuffer;ns.loop=true;
+    nf.type='bandpass';nf.frequency.setValueAtTime(3200,n);nf.frequency.exponentialRampToValueAtTime(500,n+0.35);nf.Q.value=1.2;
+    ng.gain.setValueAtTime(0,n);ng.gain.linearRampToValueAtTime(0.35,n+0.03);ng.gain.exponentialRampToValueAtTime(0.001,n+0.38);
+    ns.connect(nf);nf.connect(ng);ng.connect(audioCtx.destination);
+    ns.start(n);ns.stop(n+0.4);
+  }
+  var o=audioCtx.createOscillator();var g=audioCtx.createGain();
+  o.type='sine';o.frequency.setValueAtTime(500,n+0.08);o.frequency.exponentialRampToValueAtTime(900,n+0.3);
+  g.gain.setValueAtTime(0,n+0.08);g.gain.linearRampToValueAtTime(0.3,n+0.15);g.gain.exponentialRampToValueAtTime(0.001,n+0.4);
+  o.connect(g);g.connect(audioCtx.destination);
+  o.start(n+0.08);o.stop(n+0.42);
+}
+// Fires once, on the exact tap that completes the Swish — not on any
+// of the random taps earlier in the sequence. Restarting the ball's
+// drop animation on a repeat trigger needs the class removed and a
+// reflow forced first, since simply re-adding the same class doesn't
+// restart a CSS animation already at rest.
+function playSwishAnimation(){
+  var ball=document.getElementById('swishBall');
+  if(ball){
+    ball.classList.remove('dropping');
+    void ball.getBBox();
+    ball.classList.add('dropping');
+  }
+  document.querySelectorAll('.net-line,.rim-ring').forEach(function(el){
+    el.classList.remove('swish-flash');
+    void el.getBBox();
+    el.classList.add('swish-flash');
+    setTimeout(function(){el.classList.remove('swish-flash')},450);
+  });
+  playSwishSound();
+}
 function playCongaRoll(){if(!audioCtx)return;var n=audioCtx.currentTime;[0,2,1,2,0,2,1,1,1].forEach(function(ci,i){var p=congaPitches[ci];var t=n+(i*0.06);var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(p.freq,t);o.frequency.exponentialRampToValueAtTime(p.freqDecay,t+0.12);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.3+i*0.04,t+0.005);g.gain.exponentialRampToValueAtTime(0.001,t+0.12);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+0.15)})}
 function createTapParticles(el){var r=el.getBoundingClientRect();var cx=r.left+r.width/2,cy=r.top+r.height/3;for(var i=0;i<5;i++){var p=document.createElement('div');p.className='tap-particle';p.style.left=cx+'px';p.style.top=cy+'px';p.style.background=congaColors[Math.floor(Math.random()*congaColors.length)];var a=(i/5)*Math.PI*2;var d=35+Math.random()*25;p.style.setProperty('--tx',Math.cos(a)*d+'px');p.style.setProperty('--ty',Math.sin(a)*d+'px');p.style.animation='particleBurst 0.3s ease-out forwards';document.body.appendChild(p);setTimeout(function(x){x.remove()}.bind(null,p),300)}}
 function launchConfetti(){var colors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#FF8C42','#32CD32'];for(var i=0;i<40;i++){var c=document.createElement('div');c.className='confetti';c.style.cssText='position:absolute;left:'+(20+Math.random()*60)+'%;top:-20px;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(5+Math.random()*7)+'px;height:'+(5+Math.random()*7)+'px;border-radius:'+(Math.random()>0.5?'50%':'2px')+';animation:confettiFall '+(1.5+Math.random()*1.5)+'s ease-out forwards;animation-delay:'+(Math.random()*0.3)+'s;opacity:0';confettiContainer.appendChild(c);setTimeout(function(x){x.remove()}.bind(null,c),3500)}}
@@ -544,6 +587,7 @@ function repHandleTap(ci){
     repPlayerIndex++;
     if(repPlayerIndex>=repSequence.length){
       repIsListening=false;
+      playSwishAnimation();
       score+=repRound;$('hScore').textContent=score;
       repShotLog.push({hit:true,round:repRound,pts:repRound});
       playCongaRoll();
