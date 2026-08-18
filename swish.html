@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SWISH | Hooporia (Test)</title>
+<title>SWISH | Hooporia</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;color:#fff;background:#000;user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -172,6 +172,7 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 
 <!-- INTRO -->
 <div id="screen-intro">
+  <a class="intro-back" href="index.html">← Exit</a>
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:420px;margin:16px auto 14px">
   <button class="big-btn" id="bigStart" data-i18n="start" onclick="handleStartClick()">▶ SWISH</button>
   <button class="box-open-btn" id="openBoxBtn" data-i18n="standingsBtn">🏆 THE STANDINGS</button>
@@ -205,8 +206,8 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 </div>
 
 <script>
-var BEST_KEY='vr-the-handle-best-score';
-var BEST_ROUND_KEY='vr-the-handle-best-round';
+var BEST_KEY='vr-swish-best-score';
+var BEST_ROUND_KEY='vr-swish-best-round';
 
 function $(id){return document.getElementById(id)}
 
@@ -228,7 +229,7 @@ $('playerNameInputMain').addEventListener('keydown',function(e){
 });
 
 var score=0,best=0;
-var bpm=80,drumCount=5;
+var bpm=80,drumCount=7;
 var sessionBest=0, playersThisSession=0;
 
 (function buildFiveCellCourt(){
@@ -249,8 +250,8 @@ var sessionBest=0, playersThisSession=0;
     5:'slot2',  // top row, one in from the new right edge
     29:'slot3', // bottom row, one in from the new left edge
     33:'slot4', // bottom row, one in from the new right edge
-    24:'slot5', // one row directly under center — first step of the swish finish
-    31:'slot6'  // two rows directly under center — final step of the swish finish
+    24:'slot5', // one row below center — first step of the Swish
+    31:'slot6'  // bottom row, center column — final step of the Swish
   };
   for(var i=0;i<35;i++){
     var el;
@@ -267,8 +268,8 @@ var sessionBest=0, playersThisSession=0;
 })();
 
 var tapCongas=[$('slot0'),$('slot1'),$('slot2'),$('slot3'),$('slot4'),$('slot5'),$('slot6')];
-var congaPitches=[{freq:120,freqDecay:80},{freq:160,freqDecay:100},{freq:200,freqDecay:130},{freq:260,freqDecay:170},{freq:340,freqDecay:220},{freq:180,freqDecay:110},{freq:100,freqDecay:65}];
-var congaColors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#9B59B6','#FF8C00','#FFEC8B'];
+var congaPitches=[{freq:120,freqDecay:80},{freq:160,freqDecay:100},{freq:200,freqDecay:130},{freq:260,freqDecay:170},{freq:340,freqDecay:220},{freq:420,freqDecay:280},{freq:520,freqDecay:340}];
+var congaColors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#9B59B6','#2ECC71','#3B82F6'];
 var audioCtx=null,noiseBuffer=null;
 var confettiContainer=$('confettiContainer');
 
@@ -281,7 +282,7 @@ function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
 
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
-var SB_TABLE='swish_standings';
+var SB_TABLE='hooporia_swish_standings';
 
 function recordScoreToStandings(name,finalScore,made,attempts,avgMs,shots){
   return fetch(SB_URL+'/rest/v1/'+SB_TABLE,{
@@ -446,9 +447,6 @@ function launchConfetti(){var colors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#
 function vibrate(d){if(navigator.vibrate)navigator.vibrate(d)}
 
 var repSequence=[];
-var repRandomPrefix=[]; // grows by one random tap each round, Simon-style
-var swishFinish=[0,5,6]; // center, one down, two down — the fixed swish finish
-var swishPool=[1,2,3,4]; // the 4 side targets — the only ones eligible for the random, escalating part, so the swish's own targets never show up early and create an ambiguous back-to-back repeat right before it starts
 var repPlayerIndex=0;
 var repRound=0;
 var repBestRound=parseInt(localStorage.getItem(BEST_ROUND_KEY)||'0');
@@ -457,10 +455,20 @@ var repIsListening=false;
 var repShotLog=[];
 
 function repStart(){
-  repSequence=[];repRandomPrefix=[];repRound=0;repPlayerIndex=0;repIsPlaying=false;repIsListening=false;repShotLog=[];
+  repSequence=[];repRound=0;repPlayerIndex=0;repIsPlaying=false;repIsListening=false;repShotLog=[];
   score=0;$('hScore').textContent=0;$('hRound').textContent='--';
   repNextRound();
 }
+
+// The Swish is a fixed, memorized "finishing move" — center, then the
+// two targets directly below it — that always caps off every round's
+// sequence. Round 1 is the Swish alone (3 taps); each round after adds
+// one more random tap in front of it, endlessly. Unlike The Handle's
+// classic version, which appends a single random target onto a
+// steadily growing sequence, Swish rebuilds the sequence fresh each
+// round: N random taps (drawn from all 7 targets), then the same
+// 3-tap Swish every time.
+var SWISH_SEQUENCE=[0,5,6]; // center, one down, one more down
 
 function repNextRound(){
   if(audioCtx && audioCtx.state==='suspended')audioCtx.resume();
@@ -469,14 +477,12 @@ function repNextRound(){
   repIsListening=false;
   repIsPlaying=true;
   $('hRound').textContent=repRound;
-  // Round 1 is the swish itself, three taps, nothing else. Every round
-  // after that adds one new random tap to the front, so the sequence
-  // grows the same way The Handle's always has — but here it always
-  // resolves on the same, familiar three-tap finish.
-  if(repRound>1){
-    repRandomPrefix.push(swishPool[Math.floor(Math.random()*swishPool.length)]);
+  var randomCount=repRound-1;
+  repSequence=[];
+  for(var i=0;i<randomCount;i++){
+    repSequence.push(Math.floor(Math.random()*drumCount));
   }
-  repSequence=repRandomPrefix.concat(swishFinish);
+  repSequence=repSequence.concat(SWISH_SEQUENCE);
   msg('🧠 ROUND '+repRound+' · WATCH...','watch');
   setTimeout(function(){repPlaySequence(0)},repRound===1?1000:900);
 }
