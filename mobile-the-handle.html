@@ -8,7 +8,7 @@ if (localStorage.getItem('rct-mobile-pass') !== '1' && sessionStorage.getItem('h
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>THE HANDLE | Hooporia</title>
+<title>SWISH | Hooporia</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;color:#fff;background:#000;user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -179,10 +179,10 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="screen-intro">
   <a class="intro-back" href="index.html">← Exit</a>
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:420px;margin:16px auto 14px">
-  <button class="big-btn" id="bigStart" data-i18n="start" onclick="handleStartClick()">▶ THE HANDLE</button>
+  <button class="big-btn" id="bigStart" data-i18n="start" onclick="handleStartClick()">▶ SWISH BASKETBALL</button>
   <button class="box-open-btn" id="openBoxBtn" data-i18n="standingsBtn">🏆 THE STANDINGS</button>
   <div class="game-switcher">
-    <span class="switcher-btn game-current">The Handle</span>
+    <span class="switcher-btn game-current">Swish</span>
     <a class="switcher-btn game-active" href="basketball-reflex.html">Reflex</a>
     <a class="switcher-btn game-active" href="basketball-recall.html">Recall</a>
     <a class="switcher-btn game-active" href="basketball-flash.html">Flash</a>
@@ -194,7 +194,7 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="screen-box">
   <button class="box-back-btn" id="closeBoxBtn">← Back</button>
   <div class="box-title">THE <span>STANDINGS</span></div>
-  <div class="box-sub">The Handle · Player vs. Player</div>
+  <div class="box-sub">Swish · Player vs. Player</div>
 
   <div style="width:100%;max-width:600px">
     <div class="box-section">
@@ -217,8 +217,8 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 </div>
 
 <script>
-var BEST_KEY='vr-the-handle-best-score';
-var BEST_ROUND_KEY='vr-the-handle-best-round';
+var BEST_KEY='vr-swish-best-score';
+var BEST_ROUND_KEY='vr-swish-best-round';
 
 function $(id){return document.getElementById(id)}
 
@@ -240,7 +240,7 @@ $('playerNameInputMain').addEventListener('keydown',function(e){
 });
 
 var score=0,best=0;
-var bpm=80,drumCount=5;
+var bpm=80,drumCount=7;
 var sessionBest=0, playersThisSession=0;
 
 (function buildFiveCellCourt(){
@@ -260,7 +260,9 @@ var sessionBest=0, playersThisSession=0;
     1:'slot1',  // top row, one in from the new left edge
     5:'slot2',  // top row, one in from the new right edge
     29:'slot3', // bottom row, one in from the new left edge
-    33:'slot4'  // bottom row, one in from the new right edge
+    33:'slot4', // bottom row, one in from the new right edge
+    24:'slot5', // one row below center — first step of the Swish
+    31:'slot6'  // bottom row, center column — final step of the Swish
   };
   for(var i=0;i<35;i++){
     var el;
@@ -276,9 +278,9 @@ var sessionBest=0, playersThisSession=0;
   }
 })();
 
-var tapCongas=[$('slot0'),$('slot1'),$('slot2'),$('slot3'),$('slot4')];
-var congaPitches=[{freq:120,freqDecay:80},{freq:160,freqDecay:100},{freq:200,freqDecay:130},{freq:260,freqDecay:170},{freq:340,freqDecay:220}];
-var congaColors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#9B59B6'];
+var tapCongas=[$('slot0'),$('slot1'),$('slot2'),$('slot3'),$('slot4'),$('slot5'),$('slot6')];
+var congaPitches=[{freq:120,freqDecay:80},{freq:160,freqDecay:100},{freq:200,freqDecay:130},{freq:260,freqDecay:170},{freq:340,freqDecay:220},{freq:420,freqDecay:280},{freq:520,freqDecay:340}];
+var congaColors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#9B59B6','#2ECC71','#3B82F6'];
 var audioCtx=null,noiseBuffer=null;
 var confettiContainer=$('confettiContainer');
 
@@ -291,7 +293,7 @@ function saveBest(){try{localStorage.setItem(BEST_KEY,String(best))}catch(e){}}
 
 var SB_URL='https://sdaphocueugzfvjovuxd.supabase.co';
 var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkYXBob2N1ZXVnemZ2am92dXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQyMDgsImV4cCI6MjA5OTIwMDIwOH0.pDAzf4P6dD9eNEBlnP95SdF5BI-R84-Rdc0vKzYcn7M';
-var SB_TABLE='ritnome_mobile_handle_standings';
+var SB_TABLE='hooporia_swish_standings';
 
 function recordScoreToStandings(name,finalScore,made,attempts,avgMs,shots){
   return fetch(SB_URL+'/rest/v1/'+SB_TABLE,{
@@ -469,6 +471,16 @@ function repStart(){
   repNextRound();
 }
 
+// The Swish is a fixed, memorized "finishing move" — center, then the
+// two targets directly below it — that always caps off every round's
+// sequence. Round 1 is the Swish alone (3 taps); each round after adds
+// one more random tap in front of it, endlessly. Unlike The Handle's
+// classic version, which appends a single random target onto a
+// steadily growing sequence, Swish rebuilds the sequence fresh each
+// round: N random taps (drawn from all 7 targets), then the same
+// 3-tap Swish every time.
+var SWISH_SEQUENCE=[0,5,6]; // center, one down, one more down
+
 function repNextRound(){
   if(audioCtx && audioCtx.state==='suspended')audioCtx.resume();
   repRound++;
@@ -476,7 +488,12 @@ function repNextRound(){
   repIsListening=false;
   repIsPlaying=true;
   $('hRound').textContent=repRound;
-  repSequence.push(Math.floor(Math.random()*drumCount));
+  var randomCount=repRound-1;
+  repSequence=[];
+  for(var i=0;i<randomCount;i++){
+    repSequence.push(Math.floor(Math.random()*drumCount));
+  }
+  repSequence=repSequence.concat(SWISH_SEQUENCE);
   msg('🧠 ROUND '+repRound+' · WATCH...','watch');
   setTimeout(function(){repPlaySequence(0)},repRound===1?1000:900);
 }
@@ -562,7 +579,7 @@ function repEndGame(){
   },500);
 }
 
-['slot0','slot1','slot2','slot3','slot4'].forEach(function(id,i){
+['slot0','slot1','slot2','slot3','slot4','slot5','slot6'].forEach(function(id,i){
   $(id).addEventListener('pointerdown',function(e){
     e.preventDefault();
     initAudio();
