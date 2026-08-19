@@ -95,7 +95,7 @@ function tryEnter(){
 
   // Query Supabase: does a row exist with this code (case-insensitive), active = true, product = hooporia?
   var url = SUPABASE_URL + '/rest/v1/licenses'
-    + '?select=code,expires_at,active,product'
+    + '?select=code,expires_at,active,product,school_name'
     + '&code=ilike.' + encodeURIComponent(input)
     + '&active=eq.true'
     + '&product=eq.' + PRODUCT;
@@ -122,6 +122,7 @@ function tryEnter(){
     // valid → enter
     sessionStorage.setItem('hoop-gate-pass','1');
     sessionStorage.setItem('hoop-license', input.toUpperCase());
+    sessionStorage.setItem('hoop-school', lic.school_name || '');
     window.location.href = '/mobile-the-handle.html';
   })
   .catch(function(){
