@@ -8,7 +8,7 @@ if (localStorage.getItem('rct-mobile-pass') !== '1' && sessionStorage.getItem('h
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SWISH | Hooporia</title>
+<title>THE HANDLE | Hooporia</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;color:#fff;background:#000;user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -179,10 +179,10 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="screen-intro">
   <a class="intro-back" href="index.html">← Exit</a>
   <input type="text" id="playerNameInputMain" class="name-input" maxlength="20" placeholder="Your name" autocomplete="off" style="max-width:420px;margin:16px auto 14px">
-  <button class="big-btn" id="bigStart" data-i18n="start" onclick="handleStartClick()">▶ SWISH BASKETBALL</button>
+  <button class="big-btn" id="bigStart" data-i18n="start" onclick="handleStartClick()">▶ THE HANDLE</button>
   <button class="box-open-btn" id="openBoxBtn" data-i18n="standingsBtn">🏆 THE STANDINGS</button>
   <div class="game-switcher">
-    <span class="switcher-btn game-current">Swish</span>
+    <span class="switcher-btn game-current">The Handle</span>
     <a class="switcher-btn game-active" href="basketball-reflex.html">Reflex</a>
     <a class="switcher-btn game-active" href="basketball-recall.html">Recall</a>
     <a class="switcher-btn game-active" href="basketball-flash.html">Flash</a>
@@ -194,7 +194,7 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 <div id="screen-box">
   <button class="box-back-btn" id="closeBoxBtn">← Back</button>
   <div class="box-title">THE <span>STANDINGS</span></div>
-  <div class="box-sub">Swish · Player vs. Player</div>
+  <div class="box-sub">The Handle · Player vs. Player</div>
 
   <div style="width:100%;max-width:600px">
     <div class="box-section">
@@ -217,8 +217,8 @@ body.buzzer-shake{animation:buzzerShake .5s cubic-bezier(.36,.07,.19,.97) 2}
 </div>
 
 <script>
-var BEST_KEY='vr-swish-best-score';
-var BEST_ROUND_KEY='vr-swish-best-round';
+var BEST_KEY='vr-the-handle-best-score';
+var BEST_ROUND_KEY='vr-the-handle-best-round';
 
 function $(id){return document.getElementById(id)}
 
@@ -240,7 +240,7 @@ $('playerNameInputMain').addEventListener('keydown',function(e){
 });
 
 var score=0,best=0;
-var bpm=80,drumCount=7;
+var bpm=80,drumCount=5;
 var sessionBest=0, playersThisSession=0;
 
 (function buildFiveCellCourt(){
@@ -254,15 +254,13 @@ var sessionBest=0, playersThisSession=0;
   // just the image, but the grid's own layout/sizing too, leaving a
   // blank screen while the game logic underneath keeps running
   // normally. Real inline SVG in the DOM doesn't carry that risk.
-  court.insertAdjacentHTML('afterbegin', '<svg class="court-rim-net" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rimGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a4d"/><stop offset="50%" stop-color="#e8460f"/><stop offset="100%" stop-color="#961f02"/></linearGradient><radialGradient id="openGrad" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#3a2a1c"/><stop offset="100%" stop-color="#150d08"/></radialGradient><radialGradient id="swishBallGrad" cx="35%" cy="32%" r="65%"><stop offset="0%" stop-color="#ffe3c2"/><stop offset="45%" stop-color="#ff8c00"/><stop offset="100%" stop-color="#a84800"/></radialGradient></defs><style>.net-line{animation:netGlow 2.2s ease-in-out infinite}.rim-ring{animation:rimGlow 2.2s ease-in-out infinite}@keyframes netGlow{0%,100%{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) drop-shadow(0 0 2px rgba(255,255,255,.3));opacity:.7}50%{filter:drop-shadow(0 0 6px rgba(255,255,255,1)) drop-shadow(0 0 12px rgba(255,255,255,.7));opacity:1}}@keyframes rimGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,150,60,.5)) drop-shadow(0 0 4px rgba(255,110,30,.35))}50%{filter:drop-shadow(0 0 8px rgba(255,150,60,1)) drop-shadow(0 0 16px rgba(255,110,30,.75))}}@keyframes swishBallDrop{0%{opacity:0;transform:translateY(0)}12%{opacity:1}78%{opacity:1}100%{opacity:0;transform:translateY(62px)}}.swish-ball{opacity:0}.swish-ball.dropping{animation:swishBallDrop .5s ease-in forwards}@keyframes swishFlash{0%,100%{filter:drop-shadow(0 0 2px rgba(255,255,255,.6))}45%{filter:drop-shadow(0 0 22px rgba(255,255,255,1)) drop-shadow(0 0 44px rgba(255,200,120,1))}}.net-line.swish-flash,.rim-ring.swish-flash{animation:swishFlash .45s ease-out}</style><ellipse cx="140.0" cy="158" rx="43" ry="4.0" fill="url(#openGrad)"/><line class="net-line" x1="98.0" y1="159.0" x2="116.9" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round"/><line class="net-line" x1="182.0" y1="159.0" x2="163.1" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round" style="animation-delay:.15s"/><ellipse cx="140.0" cy="159.5" rx="48" ry="5.5" fill="#000" opacity="0.25"/><ellipse cx="140.0" cy="158" rx="46" ry="5.5" class="rim-ring" fill="none" stroke="url(#rimGrad)" stroke-width="4.5"/><ellipse cx="140.0" cy="157.4" rx="45" ry="5.0" fill="none" stroke="#ffb27a" stroke-width="1" opacity="0.55"/><circle id="swishBall" class="swish-ball" cx="140" cy="132" r="7.5" fill="url(#swishBallGrad)"/></svg>');
+  court.insertAdjacentHTML('afterbegin', '<svg class="court-rim-net" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rimGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8a4d"/><stop offset="50%" stop-color="#e8460f"/><stop offset="100%" stop-color="#961f02"/></linearGradient><radialGradient id="openGrad" cx="50%" cy="30%" r="70%"><stop offset="0%" stop-color="#3a2a1c"/><stop offset="100%" stop-color="#150d08"/></radialGradient><radialGradient id="roundWinBallGrad" cx="35%" cy="32%" r="65%"><stop offset="0%" stop-color="#ffe3c2"/><stop offset="45%" stop-color="#ff8c00"/><stop offset="100%" stop-color="#a84800"/></radialGradient></defs><style>.net-line{animation:netGlow 2.2s ease-in-out infinite}.rim-ring{animation:rimGlow 2.2s ease-in-out infinite}@keyframes netGlow{0%,100%{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) drop-shadow(0 0 2px rgba(255,255,255,.3));opacity:.7}50%{filter:drop-shadow(0 0 6px rgba(255,255,255,1)) drop-shadow(0 0 12px rgba(255,255,255,.7));opacity:1}}@keyframes rimGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,150,60,.5)) drop-shadow(0 0 4px rgba(255,110,30,.35))}50%{filter:drop-shadow(0 0 8px rgba(255,150,60,1)) drop-shadow(0 0 16px rgba(255,110,30,.75))}}@keyframes roundWinBallDrop{0%{opacity:0;transform:translateY(0)}12%{opacity:1}78%{opacity:1}100%{opacity:0;transform:translateY(62px)}}.round-win-ball{opacity:0}.round-win-ball.dropping{animation:roundWinBallDrop .5s ease-in forwards}@keyframes roundWinFlash{0%,100%{filter:drop-shadow(0 0 2px rgba(255,255,255,.6))}45%{filter:drop-shadow(0 0 22px rgba(255,255,255,1)) drop-shadow(0 0 44px rgba(255,200,120,1))}}.net-line.round-win-flash,.rim-ring.round-win-flash{animation:roundWinFlash .45s ease-out}</style><ellipse cx="140.0" cy="158" rx="43" ry="4.0" fill="url(#openGrad)"/><line class="net-line" x1="98.0" y1="159.0" x2="116.9" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round"/><line class="net-line" x1="182.0" y1="159.0" x2="163.1" y2="221.0" stroke="rgba(245,245,245,0.9)" stroke-width="1.4" stroke-linecap="round" style="animation-delay:.15s"/><ellipse cx="140.0" cy="159.5" rx="48" ry="5.5" fill="#000" opacity="0.25"/><ellipse cx="140.0" cy="158" rx="46" ry="5.5" class="rim-ring" fill="none" stroke="url(#rimGrad)" stroke-width="4.5"/><ellipse cx="140.0" cy="157.4" rx="45" ry="5.0" fill="none" stroke="#ffb27a" stroke-width="1" opacity="0.55"/><circle id="roundWinBall" class="round-win-ball" cx="140" cy="132" r="7.5" fill="url(#roundWinBallGrad)"/></svg>');
   var activeMap={
     17:'slot0', // dead center (row 3, col 4 in a 7x5 grid, zero-indexed 17)
     1:'slot1',  // top row, one in from the new left edge
     5:'slot2',  // top row, one in from the new right edge
     29:'slot3', // bottom row, one in from the new left edge
-    33:'slot4', // bottom row, one in from the new right edge
-    24:'slot5', // one row below center — first step of the Swish
-    31:'slot6'  // bottom row, center column — final step of the Swish
+    33:'slot4'  // bottom row, one in from the new right edge
   };
   for(var i=0;i<35;i++){
     var el;
@@ -278,9 +276,9 @@ var sessionBest=0, playersThisSession=0;
   }
 })();
 
-var tapCongas=[$('slot0'),$('slot1'),$('slot2'),$('slot3'),$('slot4'),$('slot5'),$('slot6')];
-var congaPitches=[{freq:120,freqDecay:80},{freq:160,freqDecay:100},{freq:200,freqDecay:130},{freq:260,freqDecay:170},{freq:340,freqDecay:220},{freq:420,freqDecay:280},{freq:520,freqDecay:340}];
-var congaColors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#9B59B6','#2ECC71','#3B82F6'];
+var tapCongas=[$('slot0'),$('slot1'),$('slot2'),$('slot3'),$('slot4')];
+var congaPitches=[{freq:120,freqDecay:80},{freq:160,freqDecay:100},{freq:200,freqDecay:130},{freq:260,freqDecay:170},{freq:340,freqDecay:220}];
+var congaColors=['#FFD700','#FF6B35','#FF1493','#00D9D9','#9B59B6'];
 var audioCtx=null,noiseBuffer=null;
 var confettiContainer=$('confettiContainer');
 
@@ -453,11 +451,13 @@ var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.fr
 var o2=audioCtx.createOscillator();var g2=audioCtx.createGain();o2.type='sine';o2.frequency.setValueAtTime(p.freq*2.2,n);o2.frequency.exponentialRampToValueAtTime(p.freqDecay*1.5,n+d*0.5);g2.gain.setValueAtTime(0,n);g2.gain.linearRampToValueAtTime(v*0.25,n+0.003);g2.gain.exponentialRampToValueAtTime(0.001,n+d*0.5);o2.connect(g2);g2.connect(audioCtx.destination);o2.start(n);o2.stop(n+d);
 if(noiseBuffer){var ns=audioCtx.createBufferSource();var ng=audioCtx.createGain();var nf=audioCtx.createBiquadFilter();ns.buffer=noiseBuffer;nf.type='bandpass';nf.frequency.value=p.freq*3;nf.Q.value=1.5;ng.gain.setValueAtTime(0.2,n);ng.gain.exponentialRampToValueAtTime(0.001,n+0.04);ns.connect(nf);nf.connect(ng);ng.connect(audioCtx.destination);ns.start(n);ns.stop(n+0.05)}}
 function playWrongSound(){if(!audioCtx)return;var n=audioCtx.currentTime;var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(80,n);o.frequency.exponentialRampToValueAtTime(40,n+0.08);g.gain.setValueAtTime(0.25,n);g.gain.exponentialRampToValueAtTime(0.001,n+0.1);o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+0.12)}
-// The Swish's own finishing sound — distinct from every regular tap
-// hit. A filtered noise sweep falling from high to low, like the
-// ball brushing through the net on its way down, with a soft rising
-// chime underneath landing just after for the reward/payoff feel.
-function playSwishSound(){
+// This game's own round-win celebration — distinct from every
+// regular tap hit. A filtered noise sweep falling from high to low,
+// like the ball brushing through the net on its way down, with a
+// soft rising chime underneath landing just after for the reward
+// feel. Fires on every successful round now, not tied to any
+// specific target, since this mechanic has no fixed finish at all.
+function playRoundWinSound(){
   if(!audioCtx)return;
   if(audioCtx.state==='suspended')audioCtx.resume();
   createNoiseBuffer();
@@ -476,25 +476,26 @@ function playSwishSound(){
   o.connect(g);g.connect(audioCtx.destination);
   o.start(n+0.08);o.stop(n+0.42);
 }
-// Fires once, on the exact tap that completes the Swish — not on any
-// of the random taps earlier in the sequence. Restarting the ball's
-// drop animation on a repeat trigger needs the class removed and a
+// Fires once, on the tap that completes each round — genuinely
+// generic now, since this mechanic ends on whichever random target
+// happens to be last, not a fixed spot. Restarting the ball's drop
+// animation on a repeat trigger needs the class removed and a
 // reflow forced first, since simply re-adding the same class doesn't
 // restart a CSS animation already at rest.
-function playSwishAnimation(){
-  var ball=document.getElementById('swishBall');
+function playRoundWinAnimation(){
+  var ball=document.getElementById('roundWinBall');
   if(ball){
     ball.classList.remove('dropping');
     void ball.getBBox();
     ball.classList.add('dropping');
   }
   document.querySelectorAll('.net-line,.rim-ring').forEach(function(el){
-    el.classList.remove('swish-flash');
+    el.classList.remove('round-win-flash');
     void el.getBBox();
-    el.classList.add('swish-flash');
-    setTimeout(function(){el.classList.remove('swish-flash')},450);
+    el.classList.add('round-win-flash');
+    setTimeout(function(){el.classList.remove('round-win-flash')},450);
   });
-  playSwishSound();
+  playRoundWinSound();
 }
 function playCongaRoll(){if(!audioCtx)return;var n=audioCtx.currentTime;[0,2,1,2,0,2,1,1,1].forEach(function(ci,i){var p=congaPitches[ci];var t=n+(i*0.06);var o=audioCtx.createOscillator();var g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(p.freq,t);o.frequency.exponentialRampToValueAtTime(p.freqDecay,t+0.12);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.3+i*0.04,t+0.005);g.gain.exponentialRampToValueAtTime(0.001,t+0.12);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+0.15)})}
 function createTapParticles(el){var r=el.getBoundingClientRect();var cx=r.left+r.width/2,cy=r.top+r.height/3;for(var i=0;i<5;i++){var p=document.createElement('div');p.className='tap-particle';p.style.left=cx+'px';p.style.top=cy+'px';p.style.background=congaColors[Math.floor(Math.random()*congaColors.length)];var a=(i/5)*Math.PI*2;var d=35+Math.random()*25;p.style.setProperty('--tx',Math.cos(a)*d+'px');p.style.setProperty('--ty',Math.sin(a)*d+'px');p.style.animation='particleBurst 0.3s ease-out forwards';document.body.appendChild(p);setTimeout(function(x){x.remove()}.bind(null,p),300)}}
@@ -590,15 +591,13 @@ function repStart(){
   repNextRound();
 }
 
-// The Swish is a fixed, memorized "finishing move" — center, then the
-// two targets directly below it — that always caps off every round's
-// sequence. Round 1 is the Swish alone (3 taps); each round after adds
-// one more random tap in front of it, endlessly. Unlike The Handle's
-// classic version, which appends a single random target onto a
-// steadily growing sequence, Swish rebuilds the sequence fresh each
-// round: N random taps (drawn from all 7 targets), then the same
-// 3-tap Swish every time.
-var SWISH_SEQUENCE=[0,5,6]; // center, one down, one more down
+// The classic Handle mechanic — endless, cumulative growth. Each
+// round appends exactly one new random tap onto the sequence from
+// every round before it, so what a player memorized in round one
+// stays true and useful all the way through round twenty — nothing
+// ever resets or regenerates from scratch, and there's no fixed
+// finishing move to fall back on. Every single tap, every round,
+// stays a genuine memory test to the very last one.
 
 function repNextRound(){
   if(audioCtx && audioCtx.state==='suspended')audioCtx.resume();
@@ -607,12 +606,7 @@ function repNextRound(){
   repIsListening=false;
   repIsPlaying=true;
   $('hRound').textContent=repRound;
-  var randomCount=repRound-1;
-  repSequence=[];
-  for(var i=0;i<randomCount;i++){
-    repSequence.push(Math.floor(Math.random()*drumCount));
-  }
-  repSequence=repSequence.concat(SWISH_SEQUENCE);
+  repSequence.push(Math.floor(Math.random()*drumCount));
   msg('🧠 ROUND '+repRound+' · WATCH...','watch');
   setTimeout(function(){repPlaySequence(0)},repRound===1?1000:900);
 }
@@ -663,7 +657,7 @@ function repHandleTap(ci){
     repPlayerIndex++;
     if(repPlayerIndex>=repSequence.length){
       repIsListening=false;
-      playSwishAnimation();
+      playRoundWinAnimation();
       score+=repRound;$('hScore').textContent=score;
       repShotLog.push({hit:true,round:repRound,pts:repRound});
       playCongaRoll();
@@ -700,7 +694,7 @@ function repEndGame(){
   },500);
 }
 
-['slot0','slot1','slot2','slot3','slot4','slot5','slot6'].forEach(function(id,i){
+['slot0','slot1','slot2','slot3','slot4'].forEach(function(id,i){
   $(id).addEventListener('pointerdown',function(e){
     e.preventDefault();
     initAudio();
