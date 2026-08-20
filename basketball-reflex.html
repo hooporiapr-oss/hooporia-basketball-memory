@@ -139,7 +139,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
   flex-direction:column;align-items:center;justify-content:center;padding:24px;
 }
 .qs-title{font-size:1.7rem;font-weight:900;font-style:italic;letter-spacing:.03em;text-transform:uppercase;text-shadow:0 0 30px rgba(255,149,0,.6);margin-bottom:24px;text-align:center;color:#fff}
-.qs-board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:480px;margin-bottom:20px}
+.qs-board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:480px;margin-bottom:20px}
 .qs-cell{border-radius:12px;border:2px solid rgba(255,149,0,.35);background:rgba(255,149,0,.06);padding:14px 6px;text-align:center}
 .qs-cell.qs-current{border-color:#ff9500;background:rgba(255,149,0,.18);box-shadow:0 0 24px rgba(255,149,0,.5)}
 .qs-label{font-size:.6rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#ffd35a;margin-bottom:4px}
@@ -160,7 +160,8 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <a class="switcher-btn game-active" href="mobile-the-handle.html">The Handle</a>
     <span class="switcher-btn game-current">Reflex</span>
     <a class="switcher-btn game-active" href="basketball-recall.html">Recall</a>
-    <a class="switcher-btn game-active" href="basketball-flash.html">Flash</a>
+    <a class="switcher-btn game-active" href="basketball-replay.html">Replay</a>
+    <a class="switcher-btn game-active" href="basketball-recognition.html">Recognition</a>
   </div>
   <div style="margin-top:24px;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#4a5058">Powered by <a href="https://hooporia.com" target="_blank" rel="noopener" style="color:#8892a0;font-style:italic;text-decoration:underline">Gostar Digital</a></div>
 </div>
@@ -208,6 +209,7 @@ html,body{width:100%;height:100%;background:#000;font-family:Arial,sans-serif;co
     <div class="qs-cell" id="qsCell1"><div class="qs-label">1st</div><div class="qs-val" id="qsQ1">0</div></div>
     <div class="qs-cell" id="qsCell2"><div class="qs-label">2nd</div><div class="qs-val" id="qsQ2">0</div></div>
     <div class="qs-cell" id="qsCell3"><div class="qs-label">3rd</div><div class="qs-val" id="qsQ3">0</div></div>
+    <div class="qs-cell" id="qsCell4"><div class="qs-label">4th</div><div class="qs-val" id="qsQ4">0</div></div>
   </div>
   <div class="qs-total">Total: <span id="qsTotal">0</span></div>
   <button class="qs-next-btn" id="qsNextBtn">NEXT: 3RD QUARTER →</button>
@@ -328,28 +330,30 @@ var THIS_QUARTER=2;
 var QUARTER_SEQUENCE=[
   {n:1,label:'1st',file:'basketball-recall.html'},
   {n:2,label:'2nd',file:'basketball-reflex.html'},
-  {n:3,label:'3rd',file:'basketball-flash.html'}
+  {n:3,label:'3rd',file:'basketball-replay.html'},
+  {n:4,label:'4th',file:'basketball-recognition.html'}
 ];
 function isFullGameActive(){return sessionStorage.getItem('hoop-fullgame-active')==='1'}
 function loadQuarterScores(){
-  try{return JSON.parse(sessionStorage.getItem('hoop-quarter-scores')||'{"q1":0,"q2":0,"q3":0}')}
-  catch(e){return {q1:0,q2:0,q3:0}}
+  try{return JSON.parse(sessionStorage.getItem('hoop-quarter-scores')||'{"q1":0,"q2":0,"q3":0,"q4":0}')}
+  catch(e){return {q1:0,q2:0,q3:0,q4:0}}
 }
 function showQuarterStats(finalScore){
   var scores=loadQuarterScores();
   scores['q'+THIS_QUARTER]=finalScore;
   sessionStorage.setItem('hoop-quarter-scores',JSON.stringify(scores));
-  var total=scores.q1+scores.q2+scores.q3;
+  var total=scores.q1+scores.q2+scores.q3+scores.q4;
 
   document.getElementById('qsTitle').textContent=QUARTER_SEQUENCE[THIS_QUARTER-1].label.toUpperCase()+' QUARTER COMPLETE!';
   document.getElementById('qsQ1').textContent=scores.q1;
   document.getElementById('qsQ2').textContent=scores.q2;
   document.getElementById('qsQ3').textContent=scores.q3;
+  document.getElementById('qsQ4').textContent=scores.q4;
   document.getElementById('qsTotal').textContent=total;
-  for(var i=1;i<=3;i++)document.getElementById('qsCell'+i).classList.toggle('qs-current',i===THIS_QUARTER);
+  for(var i=1;i<=4;i++)document.getElementById('qsCell'+i).classList.toggle('qs-current',i===THIS_QUARTER);
 
   var nextBtn=document.getElementById('qsNextBtn');
-  if(THIS_QUARTER<3){
+  if(THIS_QUARTER<4){
     var nextQ=QUARTER_SEQUENCE[THIS_QUARTER];
     nextBtn.textContent='NEXT: '+nextQ.label.toUpperCase()+' QUARTER →';
     nextBtn.onclick=function(){window.location.href=nextQ.file};
